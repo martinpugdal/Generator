@@ -1,0 +1,6 @@
+name: Generator
+version: '${project.version}'
+main: dk.martinersej.generator.Generator
+softdepend: [PlotSquared, Vault]
+authors: [MartinErSej]
+description: Generator main

@@ -1,0 +1,6 @@
+name: Generator
+version: '1.0-SNAPSHOT'
+main: dk.martinersej.generator.Generator
+softdepend: [PlotSquared, Vault]
+authors: [MartinErSej]
+description: Generator main
