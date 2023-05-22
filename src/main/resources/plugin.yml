@@ -1,6 +1,10 @@
 name: Generator
+authors: [MartinErSej]
 version: '${project.version}'
 main: dk.martinersej.generator.Generator
-softdepend: [PlotSquared, Vault]
-authors: [MartinErSej]
-description: Generator main
+depend:
+  - PlotSquared
+  - Vault
+commands:
+  generator:
+database: true

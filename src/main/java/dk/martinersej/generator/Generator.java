@@ -1,5 +1,9 @@
 package dk.martinersej.generator;
 
+import dk.martinersej.generator.command.GeneratorCommand;
+import dk.martinersej.generator.listeners.OnGeneratorBreak;
+import dk.martinersej.generator.listeners.OnGeneratorChestOpen;
+import dk.martinersej.generator.listeners.OnGeneratorPlace;
 import dk.martinersej.generator.managers.DatabaseManager;
 import dk.martinersej.generator.managers.GeneratorManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,8 +13,8 @@ import java.sql.SQLException;
 public final class Generator extends JavaPlugin {
 
     private static Generator instance;
-    private DatabaseManager databaseManager;
-    private GeneratorManager generatorManager;
+    private static DatabaseManager databaseManager;
+    private static GeneratorManager generatorManager;
 
     public static DatabaseManager getDBConnectionManager() {
         return getInstance().databaseManager;
@@ -28,6 +32,14 @@ public final class Generator extends JavaPlugin {
         instance = this;
     }
 
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public static GeneratorManager getGeneratorManager() {
+        return generatorManager;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -37,14 +49,27 @@ public final class Generator extends JavaPlugin {
         databaseManager.createTables(this, () -> {
             generatorManager.loadAllGenerators();
         });
+
+        registerListeners();
+        registerCommands();
+    }
+
+    private void registerListeners() {
+        this.getServer().getPluginManager().registerEvents(new OnGeneratorPlace(), this);
+        this.getServer().getPluginManager().registerEvents(new OnGeneratorBreak(), this);
+        this.getServer().getPluginManager().registerEvents(new OnGeneratorChestOpen(), this);
+
+    }
+
+    private void registerCommands() {
+        this.getCommand("generator").setExecutor(new GeneratorCommand(this));
     }
 
     @Override
     public void onDisable() {
         try {
             databaseManager.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ignored) {
         }
     }
 }
