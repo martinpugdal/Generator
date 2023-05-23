@@ -47,7 +47,7 @@ public final class Generator extends JavaPlugin {
         generatorManager = new GeneratorManager();
 
         databaseManager.createTables(this, () -> {
-            generatorManager.loadAllGenerators();
+            generatorManager.loadAll();
         });
 
         registerListeners();

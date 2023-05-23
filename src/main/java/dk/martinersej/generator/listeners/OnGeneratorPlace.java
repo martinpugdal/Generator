@@ -3,8 +3,6 @@ package dk.martinersej.generator.listeners;
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
-import dk.martinersej.generator.generator.block.GeneratorBlockItem;
-import dk.martinersej.generator.generator.chest.GeneratorChestItem;
 import dk.martinersej.generator.utils.GeneratorUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,6 +39,6 @@ public class OnGeneratorPlace implements Listener {
             return;
         }
 //        InventoryUtils.reduceItemInHand(player, 1);
-        Generator.getGeneratorManager().add(element);
+        Generator.getGeneratorManager().addElement(element);
     }
 }

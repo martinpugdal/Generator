@@ -1,4 +1,4 @@
-package dk.martinersej.generator.command;
+package dk.martinersej.generator.command.subgenerator;
 
 import dk.martinersej.generator.generator.GeneratorType;
 import dk.martinersej.generator.generator.block.GeneratorBlockItem;

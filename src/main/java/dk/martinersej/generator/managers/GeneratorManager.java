@@ -1,6 +1,7 @@
 package dk.martinersej.generator.managers;
 
 import dk.martinersej.generator.Generator;
+import dk.martinersej.generator.generator.GeneratorUser;
 import dk.martinersej.generator.generator.block.GeneratorBlock;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import dk.martinersej.generator.generator.GeneratorElement;
@@ -14,19 +15,21 @@ import java.util.UUID;
 
 public class GeneratorManager {
 
-
-    private final Set<GeneratorBlock> activeGenerators = Collections.synchronizedSet(new HashSet<>());
-    private final Set<GeneratorChest> activeChests = Collections.synchronizedSet(new HashSet<>());
+//    private final Set<GeneratorBlock> activeGenerators = Collections.synchronizedSet(new HashSet<>());
+    private final Set<GeneratorUser> activeUsers = new HashSet<>();
 
     public GeneratorManager() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Generator.getInstance(), () -> {
-            for (GeneratorBlock element : activeGenerators) {
-                element.drop();
+            for (GeneratorUser user : activeUsers) {
+                for (GeneratorBlock element : user.getGenerators()) {
+                    element.getGeneratorType().getDrop().setAmount((int) (element.getGeneratorType().getDrop().getAmount() * user.getMultiplier()));
+                    element.drop();
+                }
             }
         }, 20L * 5, 20L * 5);
     }
 
-    public void loadAllGenerators() {
+    public void loadAll() {
     }
 
 
@@ -49,69 +52,75 @@ public class GeneratorManager {
         return;
     }
 
-    public void add(GeneratorElement element) {
+    public void addElement(GeneratorElement element) {
         if (element instanceof GeneratorBlock) {
-            activeGenerators.add((GeneratorBlock) element);
+            getUser(element.getOwner()).addGeneratorBlock((GeneratorBlock) element);
         } else if (element instanceof GeneratorChest) {
-            activeChests.add((GeneratorChest) element);
+            getUser(element.getOwner()).setGeneratorChest((GeneratorChest) element);
         }
         saveToDatabase(element);
     }
 
-    public void remove(GeneratorElement element) {
+    public GeneratorUser getUser(UUID owner) {
+        for (GeneratorUser user : activeUsers) {
+            if (user.getUUID().equals(owner)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public void removeElement(GeneratorElement element) {
         if (element instanceof GeneratorBlock) {
-            activeGenerators.remove(element);
+            getUser(element.getOwner()).removeGeneratorBlock((GeneratorBlock) element);
         } else if (element instanceof GeneratorChest) {
-            activeChests.remove(element);
+            getUser(element.getOwner()).setGeneratorChest(null);
         }
         removeFromDatabase(Collections.singleton(element));
     }
 
     public void removeAll(Set<GeneratorElement> elements) {
         for(GeneratorElement element : elements) {
-            remove(element);
+            removeElement(element);
         }
         removeFromDatabase(elements);
     }
 
     public GeneratorElement getElement(Location location) {
-        for(GeneratorElement element : activeGenerators) {
-            if(element.getLocation().equals(location)) {
-                return element;
+        for (GeneratorUser user : activeUsers) {
+            if (user.getGeneratorChest() != null && user.getGeneratorChest().getLocation().equals(location)) {
+                return user.getGeneratorChest();
             }
-        }
-        for(GeneratorElement element : activeChests) {
-            if(element.getLocation().equals(location)) {
-                return element;
+            for (GeneratorBlock element : user.getGenerators()) {
+                if (element.getLocation().equals(location)) {
+                    return element;
+                }
             }
         }
         return null;
     }
 
     public GeneratorElement getGenerator(Location location) {
-        for(GeneratorElement element : activeGenerators) {
-            if(element.getLocation().equals(location)) {
-                return element;
-            }
-        }
-        return null;
-    }
-
-    public GeneratorElement getCollectorChest(UUID owner) {
-        for (GeneratorElement element : activeChests) {
-            if (element.getOwner().equals(owner)) {
-                return element;
+        for (GeneratorUser user : activeUsers) {
+            for (GeneratorBlock element : user.getGenerators()) {
+                if (element.getLocation().equals(location)) {
+                    return element;
+                }
             }
         }
         return null;
     }
 
     public GeneratorElement getCollectorChest(Location location) {
-        for (GeneratorElement element : activeChests) {
-            if (element.getLocation().equals(location)) {
-                return element;
+        for(GeneratorUser user : activeUsers) {
+            if(user.getGeneratorChest() != null && user.getGeneratorChest().getLocation().equals(location)) {
+                return user.getGeneratorChest();
             }
         }
         return null;
+    }
+
+    public void addUser(GeneratorUser user) {
+        activeUsers.add(user);
     }
 }

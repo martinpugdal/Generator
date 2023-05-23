@@ -3,9 +3,9 @@ package dk.martinersej.generator.listeners;
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorType;
-import dk.martinersej.generator.generator.block.GeneratorBlock;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Set;
 import java.util.WeakHashMap;
 
 public class OnGeneratorBreak implements Listener {
@@ -49,7 +48,8 @@ public class OnGeneratorBreak implements Listener {
                 location.getWorld().dropItemNaturally(location, itemStack);
             }
         }
+        location.getBlock().setType(Material.AIR);
         location.getWorld().dropItemNaturally(location, element.createItem().toItemStack());
-        Generator.getGeneratorManager().remove(element);
+        Generator.getGeneratorManager().removeElement(element);
     }
 }

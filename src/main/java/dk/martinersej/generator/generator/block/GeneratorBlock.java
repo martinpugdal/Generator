@@ -33,12 +33,12 @@ public class GeneratorBlock extends GeneratorElement {
     }
 
     public void drop() {
-        GeneratorChest generatorChest = (GeneratorChest) Generator.getGeneratorManager().getCollectorChest(getOwner());
+        GeneratorChest generatorChest = (GeneratorChest) Generator.getGeneratorManager().getUser(getOwner()).getGeneratorChest();
         if (generatorChest != null) {
             generatorChest.addDrop(generatorType);
-            return;
+        } else {
+            getLocation().getWorld().dropItemNaturally(offSetLocation, generatorType.getDrop());
         }
-        getLocation().getWorld().dropItemNaturally(offSetLocation, generatorType.getDrop());
     }
 
     public GeneratorItem createItem() {
