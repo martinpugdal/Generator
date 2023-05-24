@@ -8,17 +8,20 @@ import dk.martinersej.generator.generator.GeneratorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
 public class GeneratorBlock extends GeneratorElement {
     private final Location offSetLocation;
+    private final ItemStack dropItemStack;
     private GeneratorType generatorType;
 
     public GeneratorBlock(Location location, UUID owner, GeneratorType generatorType) {
         super(owner, location);
         this.offSetLocation = location.clone().add(0, 1, 0);
         this.generatorType = generatorType;
+        this.dropItemStack = generatorType.getDrop().clone();
     }
 
     public static GeneratorElement deserialize(Location location, UUID owner, String tier) {
@@ -33,11 +36,12 @@ public class GeneratorBlock extends GeneratorElement {
     }
 
     public void drop() {
-        GeneratorChest generatorChest = (GeneratorChest) Generator.getGeneratorManager().getUser(getOwner()).getGeneratorChest();
+        GeneratorChest generatorChest = Generator.getGeneratorManager().getUser(getOwner()).getGeneratorChest();
         if (generatorChest != null) {
             generatorChest.addDrop(generatorType);
+            generatorChest.updateGui();
         } else {
-            getLocation().getWorld().dropItemNaturally(offSetLocation, generatorType.getDrop());
+            getLocation().getWorld().dropItemNaturally(offSetLocation, dropItemStack);
         }
     }
 

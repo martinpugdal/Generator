@@ -8,21 +8,17 @@ import dk.martinersej.generator.generator.GeneratorElement;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class GeneratorManager {
 
-//    private final Set<GeneratorBlock> activeGenerators = Collections.synchronizedSet(new HashSet<>());
+    private final Set<GeneratorChest> activeChest = Collections.synchronizedSet(new HashSet<>());
     private final Set<GeneratorUser> activeUsers = new HashSet<>();
 
     public GeneratorManager() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Generator.getInstance(), () -> {
             for (GeneratorUser user : activeUsers) {
                 for (GeneratorBlock element : user.getGenerators()) {
-                    element.getGeneratorType().getDrop().setAmount((int) (element.getGeneratorType().getDrop().getAmount() * user.getMultiplier()));
                     element.drop();
                 }
             }
@@ -57,6 +53,7 @@ public class GeneratorManager {
             getUser(element.getOwner()).addGeneratorBlock((GeneratorBlock) element);
         } else if (element instanceof GeneratorChest) {
             getUser(element.getOwner()).setGeneratorChest((GeneratorChest) element);
+            activeChest.add((GeneratorChest) element);
         }
         saveToDatabase(element);
     }
@@ -75,6 +72,7 @@ public class GeneratorManager {
             getUser(element.getOwner()).removeGeneratorBlock((GeneratorBlock) element);
         } else if (element instanceof GeneratorChest) {
             getUser(element.getOwner()).setGeneratorChest(null);
+            activeChest.remove((GeneratorChest) element);
         }
         removeFromDatabase(Collections.singleton(element));
     }
@@ -97,6 +95,11 @@ public class GeneratorManager {
                 }
             }
         }
+        return null;
+    }
+
+    public GeneratorElement getElementsBetweenXandZ(HashMap<Integer, Location[]> plotCorners) {
+
         return null;
     }
 

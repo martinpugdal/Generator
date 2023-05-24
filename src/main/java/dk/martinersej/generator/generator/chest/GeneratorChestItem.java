@@ -1,6 +1,5 @@
 package dk.martinersej.generator.generator.chest;
 
-import dk.martinersej.generator.generator.GeneratorType;
 import dk.martinersej.generator.generator.GeneratorItem;
 import dk.martinersej.generator.utils.ItemBuilder;
 import org.bukkit.Location;

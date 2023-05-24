@@ -3,7 +3,7 @@ PRAGMA AUTO_VACUUM = FULL;
 
 CREATE TABLE IF NOT EXISTS user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    uuid VARCHAR(36) NOT NULL,
+    uuid VARCHAR(36) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS generator_element (
@@ -33,6 +33,6 @@ CREATE TABLE IF NOT EXISTS generator_chest_drop (
     tier INT NOT NULL,
     amount INT NOT NULL,
     FOREIGN KEY (id) REFERENCES generator_chest(id) ON DELETE CASCADE
-)
+);
 
-CREATE INDEX IF NOT EXISTS idx_generator_loc ON generator(loc_x, loc_y, loc_z, world);
+CREATE INDEX IF NOT EXISTS idx_generator_loc ON generator_element(loc_x, loc_y, loc_z, world);

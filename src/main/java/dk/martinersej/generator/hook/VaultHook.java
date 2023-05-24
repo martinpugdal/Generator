@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.util.UUID;
+
 public class VaultHook {
 
     private static Economy econ;
@@ -34,5 +36,9 @@ public class VaultHook {
 
     public static void addBalance(OfflinePlayer player, double amount) throws IllegalStateException {
         getEconomy().depositPlayer(player, amount);
+    }
+
+    public static void addBalance(UUID owner, double amount) throws IllegalStateException {
+        getEconomy().depositPlayer(Bukkit.getOfflinePlayer(owner), amount);
     }
 }

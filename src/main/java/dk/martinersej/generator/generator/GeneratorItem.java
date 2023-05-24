@@ -1,7 +1,5 @@
 package dk.martinersej.generator.generator;
 
-import dk.martinersej.generator.generator.GeneratorElement;
-import dk.martinersej.generator.generator.GeneratorType;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 

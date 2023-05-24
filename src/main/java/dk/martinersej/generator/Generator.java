@@ -1,9 +1,7 @@
 package dk.martinersej.generator;
 
 import dk.martinersej.generator.command.GeneratorCommand;
-import dk.martinersej.generator.listeners.OnGeneratorBreak;
-import dk.martinersej.generator.listeners.OnGeneratorChestOpen;
-import dk.martinersej.generator.listeners.OnGeneratorPlace;
+import dk.martinersej.generator.listeners.*;
 import dk.martinersej.generator.managers.DatabaseManager;
 import dk.martinersej.generator.managers.GeneratorManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -58,7 +56,9 @@ public final class Generator extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnGeneratorPlace(), this);
         this.getServer().getPluginManager().registerEvents(new OnGeneratorBreak(), this);
         this.getServer().getPluginManager().registerEvents(new OnGeneratorChestOpen(), this);
-
+        this.getServer().getPluginManager().registerEvents(new OnUserJoin(), this);
+        this.getServer().getPluginManager().registerEvents(new OnUserQuit(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlotUnclaim(), this);
     }
 
     private void registerCommands() {

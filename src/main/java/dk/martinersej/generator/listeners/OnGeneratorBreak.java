@@ -32,6 +32,10 @@ public class OnGeneratorBreak implements Listener {
         if(element == null) {
             return;
         }
+        if (element.getOwner() != player.getUniqueId()) {
+            player.sendMessage("§c§oIkke din "+ ((element instanceof GeneratorChest) ? "sell chest" : "generator") +"!");
+            return;
+        }
         if (!player.isSneaking()) {
             event.setCancelled(true);
             return;
