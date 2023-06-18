@@ -6,9 +6,9 @@ import java.util.UUID;
 
 public abstract class GeneratorElement {
 
-
     private final UUID owner;
     private final Location location;
+    private int id;
 
     public GeneratorElement(UUID owner, Location location) {
         this.owner = owner;
@@ -24,4 +24,12 @@ public abstract class GeneratorElement {
     }
 
     public abstract GeneratorItem<GeneratorElement> createItem();
+
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

@@ -4,6 +4,7 @@ import dk.martinersej.generator.generator.GeneratorType;
 import dk.martinersej.generator.generator.block.GeneratorBlockItem;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import dk.martinersej.generator.generator.chest.GeneratorChestItem;
+import dk.martinersej.generator.generator.chest.GeneratorChestSellStickItem;
 import dk.martinersej.generator.utils.command.CommandResult;
 import dk.martinersej.generator.utils.command.Result;
 import dk.martinersej.generator.utils.command.SubCommand;
@@ -43,12 +44,15 @@ public class GeneratorGiveCommand extends SubCommand {
         if (args[0].equalsIgnoreCase("generator")) {
             GeneratorType generatorType = GeneratorType.values()[random.nextInt(GeneratorType.values().length)];
             ItemStack itemStack = generatorType.getItemStack();
-            itemStack.setAmount(Integer.parseInt(args[1] == null ? "1" : args[1]));
             player.getInventory().addItem(itemStack);
         } else if (args[0].equalsIgnoreCase("chest")) {
             ItemStack itemStack = new GeneratorChestItem().toItemStack();
-            itemStack.setAmount(Integer.parseInt(args[1] == null ? "1" : args[1]));
             player.getInventory().addItem(itemStack);
+        } else if (args[0].equalsIgnoreCase("sellstick")) {
+            ItemStack itemStack = new GeneratorChestSellStickItem().toItemStack();
+            player.getInventory().addItem(itemStack);
+        } else {
+            return new CommandResult(this, Result.WRONG_USAGE);
         }
 
         return new CommandResult(this, Result.SUCCESS);

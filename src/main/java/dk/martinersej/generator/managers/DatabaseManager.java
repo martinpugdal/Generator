@@ -38,10 +38,10 @@ public class DatabaseManager {
         this.connect((connection) -> {
             try {
                 this.connection.createStatement().executeUpdate(sql);
-                callback.run();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            callback.run();
         });
     }
 

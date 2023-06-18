@@ -6,15 +6,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.UUID;
+
 public class OnUserJoin implements Listener {
 
     @EventHandler
     public void onUserJoin(PlayerJoinEvent event) {
-        GeneratorUser user = Generator.getGeneratorManager().getUser(event.getPlayer().getUniqueId());
+        UUID uuid = event.getPlayer().getUniqueId();
+        GeneratorUser user = Generator.getUserManager().getUser(uuid);
         if (user == null) {
             user = new GeneratorUser(event.getPlayer().getUniqueId());
-            Generator.getGeneratorManager();
-            Generator.getGeneratorManager().addUser(user);
+            Generator.getUserManager().createUser(user);
         }
+        Generator.getUserManager().addActiveUser(user);
     }
 }

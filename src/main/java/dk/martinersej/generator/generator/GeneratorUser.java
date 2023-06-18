@@ -11,17 +11,21 @@ import java.util.UUID;
 public class GeneratorUser {
 
     private final UUID uuid;
-    private double multiplier;
-    private double xp;
-
-    private final Set<GeneratorBlock> generatorBlocks;
+    private final Set<GeneratorBlock> generatorBlocks = Collections.synchronizedSet(new HashSet<>());
+    private long generatorSlots = 25;
+    private long multiplier = 1;
+    private long xp = 0;
     private GeneratorChest generatorChest;
 
     public GeneratorUser(UUID uuid) {
         this.uuid = uuid;
-        this.xp = 0;
-        this.multiplier = 1;
-        this.generatorBlocks = Collections.synchronizedSet(new HashSet<>());
+    }
+
+    public GeneratorUser(UUID uuid, long multiplier, long xp, long generatorSlots) {
+        this(uuid);
+        this.multiplier = multiplier;
+        this.xp = xp;
+        this.generatorSlots = generatorSlots;
     }
 
     public void addGeneratorBlock(GeneratorBlock generatorBlock) {
@@ -40,20 +44,36 @@ public class GeneratorUser {
         this.generatorChest = generatorChest;
     }
 
-    public double getMultiplier() {
+    public long getMultiplier() {
         return multiplier;
     }
 
-    public void setMultiplier(double multiplier) {
+    public void setMultiplier(long multiplier) {
         this.multiplier = multiplier;
     }
 
-    public double getXp() {
+    public void addMultiplier(long multiplier) {
+        this.multiplier += multiplier;
+    }
+
+    public void removeMultiplier(long multiplier) {
+        this.multiplier -= multiplier;
+    }
+
+    public long getXp() {
         return xp;
     }
 
-    public void setXp(double xp) {
+    public void setXp(long xp) {
         this.xp = xp;
+    }
+
+    public void addXp(long xp) {
+        this.xp += xp;
+    }
+
+    public void removeXp(long xp) {
+        this.xp -= xp;
     }
 
     public UUID getUUID() {
@@ -62,5 +82,13 @@ public class GeneratorUser {
 
     public Set<GeneratorBlock> getGenerators() {
         return generatorBlocks;
+    }
+
+    public long getGeneratorSlots() {
+        return generatorSlots;
+    }
+
+    public void setGeneratorSlots(long generatorSlots) {
+        this.generatorSlots = generatorSlots;
     }
 }

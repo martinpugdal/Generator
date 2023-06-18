@@ -5,6 +5,8 @@ main: dk.martinersej.generator.Generator
 depend:
   - PlotSquared
   - Vault
+softdepend:
+  - PlaceholderAPI
 commands:
   generator:
 database: true
