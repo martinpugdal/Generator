@@ -29,7 +29,7 @@ public class OnGeneratorBreak implements Listener {
         Location location = block.getLocation();
 
         GeneratorElement element = Generator.getGeneratorManager().getElement(location);
-        if(element == null) {
+        if (element == null) {
             return;
         }
         if (!player.isSneaking()) {
@@ -37,15 +37,30 @@ public class OnGeneratorBreak implements Listener {
             return;
         }
         if (!element.getOwner().equals(player.getUniqueId())) {
-            player.sendMessage("§c§oIkke din "+ ((element instanceof GeneratorChest) ? "sell chest" : "generator") +"!");
+            player.sendMessage("§c§oIkke din " + ((element instanceof GeneratorChest) ? "sell chest" : "generator") + "!");
             event.setCancelled(true);
             return;
         }
         if (element instanceof GeneratorChest) {
             GeneratorChest generatorChest = (GeneratorChest) element;
             WeakHashMap<GeneratorType, Integer> drops = generatorChest.getDrops();
+
+            int MAX_ITEMS_IN_CHEST = 800;
+
+            long total = 0;
+            for (int i : drops.values()) {
+                total += i;
+                if (total > MAX_ITEMS_IN_CHEST) {
+                    break;
+                }
+            }
+            if (total > MAX_ITEMS_IN_CHEST) {
+                player.sendMessage("§c§oDu kan ikke smadre en sell chest med mere end " + MAX_ITEMS_IN_CHEST + " items i!");
+                event.setCancelled(true);
+                return;
+            }
             for (GeneratorType generatorType : drops.keySet()) {
-                if (!drops.containsKey(generatorType)) {
+                if (drops.containsKey(generatorType)) {
                     continue;
                 }
                 ItemStack itemStack = generatorType.getDrop();

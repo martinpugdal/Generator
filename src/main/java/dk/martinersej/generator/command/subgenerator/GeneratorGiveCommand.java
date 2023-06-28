@@ -1,8 +1,6 @@
 package dk.martinersej.generator.command.subgenerator;
 
 import dk.martinersej.generator.generator.GeneratorType;
-import dk.martinersej.generator.generator.block.GeneratorBlockItem;
-import dk.martinersej.generator.generator.chest.GeneratorChest;
 import dk.martinersej.generator.generator.chest.GeneratorChestItem;
 import dk.martinersej.generator.generator.chest.GeneratorChestSellStickItem;
 import dk.martinersej.generator.utils.command.CommandResult;
@@ -12,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.Random;
 
 public class GeneratorGiveCommand extends SubCommand {

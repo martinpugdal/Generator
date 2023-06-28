@@ -1,6 +1,7 @@
 package dk.martinersej.generator;
 
 import dk.martinersej.generator.command.GeneratorCommand;
+import dk.martinersej.generator.command.GenlistCommand;
 import dk.martinersej.generator.hook.PlaceholderAPIHook;
 import dk.martinersej.generator.listeners.*;
 import dk.martinersej.generator.managers.DatabaseManager;
@@ -65,6 +66,8 @@ public final class Generator extends JavaPlugin {
     }
 
     private void registerListeners() {
+        this.getServer().getPluginManager().registerEvents(new GlobalListeners(), this);
+
         this.getServer().getPluginManager().registerEvents(new OnGeneratorPlace(), this);
         this.getServer().getPluginManager().registerEvents(new OnGeneratorBreak(), this);
         this.getServer().getPluginManager().registerEvents(new OnGeneratorChestRightClick(), this);
@@ -76,6 +79,7 @@ public final class Generator extends JavaPlugin {
 
     private void registerCommands() {
         this.getCommand("generator").setExecutor(new GeneratorCommand(this));
+        this.getCommand("genlist").setExecutor(new GenlistCommand(this));
     }
 
     @Override

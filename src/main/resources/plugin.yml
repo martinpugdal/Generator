@@ -9,4 +9,5 @@ softdepend:
   - PlaceholderAPI
 commands:
   generator:
+  genlist:
 database: true

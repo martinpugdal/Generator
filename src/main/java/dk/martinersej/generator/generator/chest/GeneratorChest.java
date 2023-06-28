@@ -1,7 +1,7 @@
 package dk.martinersej.generator.generator.chest;
 
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import dev.triumphteam.gui.guis.PaginatedGui;
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
@@ -19,7 +19,7 @@ import java.util.*;
 
 public class GeneratorChest extends GeneratorElement {
     private final WeakHashMap<GeneratorType, Integer> drops = new WeakHashMap<>();
-    private final Gui gui = new Gui(5, "§aGenerator Chest");
+    private final PaginatedGui gui = new PaginatedGui(5, "§aGenerator Chest");
 
     public GeneratorChest(Location location, UUID owner) {
         super(owner, location);
@@ -29,6 +29,17 @@ public class GeneratorChest extends GeneratorElement {
         gui.getFiller().fillBottom(filler);
         gui.getFiller().fillTop(filler);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
+
+        GuiItem backItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("§aForrige side").toItemStack());
+        GuiItem nextPageItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("§aNæste side").toItemStack());
+        backItem.setAction(event -> {
+            gui.previous();
+        });
+        nextPageItem.setAction(event -> {
+            gui.next();
+        });
+        gui.setItem(5, 3, backItem);
+        gui.setItem(5, 7, nextPageItem);
     }
 
     @Override
@@ -56,13 +67,13 @@ public class GeneratorChest extends GeneratorElement {
 
     public void updateGui() {
         for (GeneratorType generatorType : GeneratorType.values()) {
-            gui.removeItem(generatorType.ordinal() + 9);
+            gui.updatePageItem(generatorType.ordinal() + 9, new ItemStack(Material.AIR));
             if (!drops.containsKey(generatorType)) {
                 continue;
             }
             GuiItem guiItem = new GuiItem(generatorType.getDrop());
             ItemMeta itemMeta = guiItem.getItemStack().getItemMeta().clone();
-            itemMeta.setLore(Arrays.asList("", "§7Klik for at sælge alle "+itemMeta.getDisplayName(), ""));
+            itemMeta.setLore(Arrays.asList("", "§7Klik for at sælge alle " + itemMeta.getDisplayName(), ""));
             itemMeta.setDisplayName(itemMeta.getDisplayName() + " §7x§a" + drops.get(generatorType));
             guiItem.getItemStack().setItemMeta(itemMeta);
             guiItem.getItemStack().setAmount(1);
@@ -127,7 +138,7 @@ public class GeneratorChest extends GeneratorElement {
         return drops;
     }
 
-    public Gui getGUI() {
+    public PaginatedGui getGUI() {
         return gui;
     }
 }

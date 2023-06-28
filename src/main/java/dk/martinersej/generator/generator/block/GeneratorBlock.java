@@ -6,12 +6,11 @@ import dk.martinersej.generator.generator.GeneratorItem;
 import dk.martinersej.generator.generator.GeneratorType;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import dk.martinersej.generator.utils.ParticleUtils;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
 
 import java.util.UUID;
 
@@ -39,7 +38,11 @@ public class GeneratorBlock extends GeneratorElement {
         if (generatorChest != null) {
             generatorChest.addDrop(generatorType);
             if (MinecraftServer.getServer().recentTps[0] > 19) {
-                ParticleUtils.drawLine(getLocation(), generatorChest.getLocation(), 0.5, generatorType.getColor());
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.getLocation().distance(getLocation()) < 20) {
+                        ParticleUtils.drawLine(getLocation(), generatorChest.getLocation(), player, 0.5, generatorType.getColor());
+                    }
+                }
             }
         } else {
             getLocation().getWorld().dropItemNaturally(offSetLocation, generatorType.getDrop());

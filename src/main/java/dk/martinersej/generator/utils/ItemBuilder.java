@@ -133,6 +133,16 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setGlowing(boolean glowing) {
+        if (glowing) {
+            ItemMeta meta = is.getItemMeta();
+            meta.addEnchant(org.bukkit.enchantments.Enchantment.DURABILITY, 1, true);
+            meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
+            is.setItemMeta(meta);
+        }
+        return this;
+    }
+
     /**
      * Add an enchant to the item.
      *

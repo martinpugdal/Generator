@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-public class GeneratorCommand extends Command implements CommandExecutor, TabCompleter {
+public class GeneratorCommand extends Command implements CommandExecutor {
     public GeneratorCommand(JavaPlugin plugin) {
         super(plugin);
         addSubCommand(new GeneratorGiveCommand(plugin));
@@ -38,8 +38,8 @@ public class GeneratorCommand extends Command implements CommandExecutor, TabCom
         return true;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
-        return getAllowedSubCommands(commandSender, command, s, strings);
-    }
+//    @Override
+//    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
+//        return getAllowedSubCommands(commandSender, command, s, strings);
+//    }
 }
