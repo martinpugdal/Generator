@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -18,7 +19,7 @@ import java.util.WeakHashMap;
 
 public class OnGeneratorBreak implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onGeneratorBreak(PlayerInteractEvent event) {
         if (!(event.getAction() == Action.LEFT_CLICK_BLOCK)) {
             return;
@@ -32,13 +33,12 @@ public class OnGeneratorBreak implements Listener {
         if (element == null) {
             return;
         }
+        event.setCancelled(true);
         if (!player.isSneaking()) {
-            event.setCancelled(true);
             return;
         }
         if (!element.getOwner().equals(player.getUniqueId())) {
             player.sendMessage("§c§oIkke din " + ((element instanceof GeneratorChest) ? "sell chest" : "generator") + "!");
-            event.setCancelled(true);
             return;
         }
         if (element instanceof GeneratorChest) {
@@ -56,7 +56,6 @@ public class OnGeneratorBreak implements Listener {
             }
             if (total > MAX_ITEMS_IN_CHEST) {
                 player.sendMessage("§c§oDu kan ikke smadre en sell chest med mere end " + MAX_ITEMS_IN_CHEST + " items i!");
-                event.setCancelled(true);
                 return;
             }
             for (GeneratorType generatorType : drops.keySet()) {

@@ -21,7 +21,7 @@ public class GeneratorGiveCommand extends SubCommand {
         super(
                 plugin,
                 "Giver dig en generator",
-                "<item> <amount>",
+                "give <generator|chest|sellstick|all>",
                 "generator.give",
                 "give"
         );
@@ -34,14 +34,16 @@ public class GeneratorGiveCommand extends SubCommand {
             sender.sendMessage("Kun spillere må bruge denne kommando");
             return new CommandResult(this, Result.SUCCESS);
         }
-        sender.sendMessage(args);
         if (args.length < 1) {
             return new CommandResult(this, Result.WRONG_USAGE);
         }
-        Player player = (Player) sender;
 
+        Player player = (Player) sender;
         if (args[0].equalsIgnoreCase("generator")) {
             GeneratorType generatorType = GeneratorType.values()[random.nextInt(GeneratorType.values().length)];
+            if (args.length > 1) {
+                generatorType = GeneratorType.values()[Integer.parseInt(args[1])];
+            }
             ItemStack itemStack = generatorType.getItemStack();
             player.getInventory().addItem(itemStack);
         } else if (args[0].equalsIgnoreCase("chest")) {

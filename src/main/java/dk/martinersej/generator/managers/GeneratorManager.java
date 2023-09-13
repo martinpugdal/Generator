@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+@SuppressWarnings("CallToPrintStackTrace")
 public class GeneratorManager {
 
     private final Set<GeneratorChest> activeChest = Collections.synchronizedSet(new HashSet<>());
@@ -35,7 +36,7 @@ public class GeneratorManager {
                 chest.updateGui();
             }
             updateDropsCounter[0]++;
-            if (updateDropsCounter[0] >= 25) {
+            if (updateDropsCounter[0] > 25) {
                 updateDropsCounter[0] = 0;
                 Generator.getGeneratorManager().updateDrops();
             }
@@ -59,7 +60,7 @@ public class GeneratorManager {
                                 stmt.setInt(3, drops.getValue());
                                 stmt.addBatch();
                             }
-                            System.out.println("Saving drops for chest " + chest.getId() + "...");
+//                            System.out.println("Saving drops for chest " + chest.getId() + "...");
                         }
                         stmt.executeBatch();
                     } catch (SQLException ex) {
@@ -111,12 +112,10 @@ public class GeneratorManager {
                                 GeneratorBlock generatorBlock = new GeneratorBlock(location, owner, GeneratorType.getGeneratorType(tier));
                                 generatorBlock.setID(id);
                                 Generator.getUserManager().getUser(owner).addGeneratorBlock(generatorBlock);
-//                                unsafeaddElement(generatorBlock);
                             } else if (type.equalsIgnoreCase("generator_chest")) {
                                 GeneratorChest generatorChest = new GeneratorChest(location, owner);
                                 generatorChest.setID(id);
                                 Generator.getUserManager().getUser(owner).setGeneratorChest(generatorChest);
-//                                unsafeaddElement(generatorChest);
                             }
                         }
                         PreparedStatement preparedStatement = connection.prepareStatement("SELECT chest_id, tier, amount FROM generator_chest_drop");
@@ -213,12 +212,6 @@ public class GeneratorManager {
         }
     }
 
-    public void unsafeaddElement(GeneratorElement element) {
-        if (element instanceof GeneratorChest) {
-            activeChest.add((GeneratorChest) element);
-        }
-    }
-
     public void removeElement(GeneratorElement element) {
         deleteElements(Collections.singleton(element));
         if (element instanceof GeneratorBlock) {
@@ -252,12 +245,19 @@ public class GeneratorManager {
 
     public Set<GeneratorElement> getElementsBetweenXandZ(com.intellectualcrafters.plot.object.Location[] plotCorners) {
         com.intellectualcrafters.plot.object.Location min = plotCorners[0];
-        com.intellectualcrafters.plot.object.Location max = plotCorners[3];
+        com.intellectualcrafters.plot.object.Location max = plotCorners[1];
         Set<GeneratorElement> elements = new HashSet<>();
         for (GeneratorUser user : Generator.getUserManager().getUsers().values()) {
             for (GeneratorBlock element : user.getGenerators()) {
-                if (element.getLocation().getBlockX() >= min.getX() && element.getLocation().getBlockX() <= max.getX() && element.getLocation().getBlockZ() >= min.getZ() && element.getLocation().getBlockZ() <= max.getZ()) {
+                Location location = element.getLocation();
+                if (location.getBlockX() >= min.getX() && location.getBlockX() <= max.getX() && location.getBlockZ() >= min.getZ() && location.getBlockZ() <= max.getZ()) {
                     elements.add(element);
+                }
+            }
+            if (user.getGeneratorChest() != null) {
+                Location location = user.getGeneratorChest().getLocation();
+                if (location.getBlockX() >= min.getX() && location.getBlockX() <= max.getX() && location.getBlockZ() >= min.getZ() && location.getBlockZ() <= max.getZ()) {
+                    elements.add(user.getGeneratorChest());
                 }
             }
         }

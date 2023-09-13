@@ -1,6 +1,6 @@
 package dk.martinersej.generator.listeners;
 
-import dk.martinersej.generator.hook.VaultHook;
+import dk.martinersej.generator.hooks.VaultHook;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

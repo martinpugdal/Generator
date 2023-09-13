@@ -7,16 +7,18 @@ import dk.martinersej.generator.generator.GeneratorElement;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class OnPlotUnclaim implements Listener {
 
+    @Deprecated
     @EventHandler
     public void onPlotUnclaim(PlotDeleteEvent event) {
+        Set<GeneratorElement> elements = new HashSet<>();
         for (Plot plot : event.getPlot().getConnectedPlots()) {
-            System.out.println(plot.getCorners().clone().length);
-//            Set<GeneratorElement> elementSet = Generator.getGeneratorManager().getElementsBetweenXandZ(plot.getCorners().clone());
-//            Generator.getGeneratorManager().removeAll(elementSet);
+            elements.addAll(Generator.getGeneratorManager().getElementsBetweenXandZ(plot.getCorners().clone()));
         }
+        Generator.getGeneratorManager().removeAll(elements);
     }
 }

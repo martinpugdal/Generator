@@ -39,8 +39,10 @@ public class GeneratorBlock extends GeneratorElement {
             generatorChest.addDrop(generatorType);
             if (MinecraftServer.getServer().recentTps[0] > 19) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.getLocation().distance(getLocation()) < 20) {
-                        ParticleUtils.drawLine(getLocation(), generatorChest.getLocation(), player, 0.5, generatorType.getColor());
+                    if (player.getWorld().equals(getLocation().getWorld())) {
+                        if (player.getLocation().distance(getLocation()) < 20) {
+                            ParticleUtils.drawLine(getLocation(), generatorChest.getLocation(), player, 0.5, generatorType.getColor());
+                        }
                     }
                 }
             }

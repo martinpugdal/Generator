@@ -26,12 +26,14 @@ public class ParticleUtils {
 
     public static void drawLine(Location point1, Location point2, Player player, double space, Color color) {
         World world = point1.getWorld();
-        Validate.isTrue(point2.getWorld().equals(world), "Lines cannot be in different worlds!");
+        if (!point2.getWorld().equals(world)) {
+            return;
+        }
         point1 = point1.clone().add(0.5, 0.5, 0.5);
         point2 = point2.clone().add(0.5, 0.5, 0.5);
         double distance = point1.distance(point2);
         if (distance > 100) {
-            throw new IllegalArgumentException("Distance between points is too long!");
+            return;
         }
         Vector p1 = point1.toVector();
         Vector p2 = point2.toVector();

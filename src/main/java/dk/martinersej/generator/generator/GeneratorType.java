@@ -123,7 +123,7 @@ public enum GeneratorType {
             19,
             Color.MAGENTA
     ),
-    WOOLLIGHT_BLUE_GENERATOR(
+    WOOLLIGHTBLUE_GENERATOR(
             new ItemBuilder(Material.WOOL, 1).setDurability((short) 3).setName("§bLIGHT BLUE GENERATOR").toItemStack(),
             new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 12).setName("§bLIGHT BLUE DYE").toItemStack(),
             20,
@@ -153,7 +153,7 @@ public enum GeneratorType {
             24,
             Color.GRAY
     ),
-    WOOLLIGHT_GRAY_GENERATOR(
+    WOOLLIGHTGRAY_GENERATOR(
             new ItemBuilder(Material.WOOL, 1).setDurability((short) 8).setName("§7LIGHT GRAY GENERATOR").toItemStack(),
             new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 7).setName("§7LIGHT GRAY DYE").toItemStack(),
             25,
@@ -197,122 +197,225 @@ public enum GeneratorType {
     ),
     WOOLBLACK_GENERATOR(
             new ItemBuilder(Material.WOOL, 1).setDurability((short) 15).setName("§0BLACK GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 0).setName("§0BLACK DYE").toItemStack(),
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 0).setName("§0BLACK DYE").setGlowing(true).toItemStack(),
             32,
             Color.BLACK
     ),
 
-    CLAY_GENERATOR(
-            new ItemBuilder(Material.CLAY, 1).setName("§fCLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 0).setName("§fCLAY").toItemStack(),
-            33,
-            Color.WHITE
-    ),
     WHITESTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 0).setName("§fWHITE STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 0).setName("§fWHITE STAINED CLAY").toItemStack(),
-            34,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 0).setName("§fWHITE STAINED CLAY").setGlowing(true).toItemStack(),
+            33,
             Color.WHITE
     ),
     ORANGESTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 1).setName("§6ORANGE STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 14).setName("§6ORANGE STAINED CLAY").toItemStack(),
-            35,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 14).setName("§6ORANGE STAINED CLAY").setGlowing(true).toItemStack(),
+            34,
             Color.ORANGE
     ),
     MAGENTASTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 2).setName("§dMAGENTA STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 13).setName("§dMAGENTA STAINED CLAY").toItemStack(),
-            36,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 13).setName("§dMAGENTA STAINED CLAY").setGlowing(true).toItemStack(),
+            35,
             Color.MAGENTA
     ),
     LIGHTBLUESTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 3).setName("§bLIGHT BLUE STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 12).setName("§bLIGHT BLUE STAINED CLAY").toItemStack(),
-            37,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 12).setName("§bLIGHT BLUE STAINED CLAY").setGlowing(true).toItemStack(),
+            36,
             Color.BLUE
     ),
     YELLOWSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 4).setName("§eYELLOW STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 11).setName("§eYELLOW STAINED CLAY").toItemStack(),
-            38,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 11).setName("§eYELLOW STAINED CLAY").setGlowing(true).toItemStack(),
+            37,
             Color.YELLOW
     ),
     LIMESTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 5).setName("§aLIME STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName("§aLIME STAINED CLAY").toItemStack(),
-            39,
-            Color.GREEN
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName("§aLIME STAINED CLAY").setGlowing(true).toItemStack(),
+            38,
+            Color.getHSBColor(0.33f, 1f, 0.5f)
     ),
     PINKSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 6).setName("§dPINK STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 9).setName("§dPINK STAINED CLAY").toItemStack(),
-            40,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 9).setName("§dPINK STAINED CLAY").setGlowing(true).toItemStack(),
+            39,
             Color.PINK
     ),
     GRAYSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 7).setName("§8GRAY STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName("§8GRAY STAINED CLAY").toItemStack(),
-            41,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName("§8GRAY STAINED CLAY").setGlowing(true).toItemStack(),
+            40,
             Color.GRAY
     ),
     LIGHTGRAYSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 8).setName("§7LIGHT GRAY STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 7).setName("§7LIGHT GRAY STAINED CLAY").toItemStack(),
-            42,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 7).setName("§7LIGHT GRAY STAINED CLAY").setGlowing(true).toItemStack(),
+            41,
             Color.GRAY
     ),
     CYANSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 9).setName("§3CYAN STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 6).setName("§3CYAN STAINED CLAY").toItemStack(),
-            43,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 6).setName("§3CYAN STAINED CLAY").setGlowing(true).toItemStack(),
+            42,
             Color.getHSBColor(180, 100, 100)
     ),
     PURPLESTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 10).setName("§5PURPLE STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 5).setName("§5PURPLE STAINED CLAY").toItemStack(),
-            44,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 5).setName("§5PURPLE STAINED CLAY").setGlowing(true).toItemStack(),
+            43,
             Color.getHSBColor(300, 100, 100)
     ),
     BLUESTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 11).setName("§9BLUE STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 4).setName("§9BLUE STAINED CLAY").toItemStack(),
-            45,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 4).setName("§9BLUE STAINED CLAY").setGlowing(true).toItemStack(),
+            44,
             Color.BLUE
     ),
     BROWNSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 12).setName("§6BROWN STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§6BROWN STAINED CLAY").toItemStack(),
-            46,
-            Color.getHSBColor(30, 100, 100)
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§6BROWN STAINED CLAY").setGlowing(true).toItemStack(),
+            45,
+            Color.getHSBColor(6, 56, 20)
     ),
     GREENSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 13).setName("§2GREEN STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 2).setName("§2GREEN STAINED CLAY").toItemStack(),
-            47,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 2).setName("§2GREEN STAINED CLAY").setGlowing(true).toItemStack(),
+            46,
             Color.GREEN
     ),
     REDSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 14).setName("§cRED STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 1).setName("§cRED STAINED CLAY").toItemStack(),
-            48,
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 1).setName("§cRED STAINED CLAY").setGlowing(true).toItemStack(),
+            47,
             Color.RED
     ),
     BLACKSTAINEDCLAY_GENERATOR(
             new ItemBuilder(Material.STAINED_CLAY, 1).setDurability((short) 15).setName("§0BLACK STAINED CLAY GENERATOR").toItemStack(),
-            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 0).setName("§0BLACK STAINED CLAY").toItemStack(),
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 0).setName("§0BLACK STAINED CLAY").setGlowing(true).toItemStack(),
+            48,
+            Color.BLACK
+    ),
+
+    WHITESTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 0).setName("§fWHITE STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 0).setName("§fWHITE STAINED GLASS PANE").toItemStack(),
             49,
+            Color.WHITE
+    ),
+    ORANGESTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 1).setName("§6ORANGE STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 1).setName("§6ORANGE STAINED GLASS PANE").toItemStack(),
+            50,
+            Color.ORANGE
+    ),
+    MAGENTASTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 2).setName("§dMAGENTA STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 2).setName("§dMAGENTA STAINED GLASS PANE").toItemStack(),
+            51,
+            Color.MAGENTA
+    ),
+    LIGHTBLUESTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 3).setName("§bLIGHT BLUE STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 3).setName("§bLIGHT BLUE STAINED GLASS PANE").toItemStack(),
+            52,
+            Color.CYAN
+    ),
+    YELLOWSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 4).setName("§eYELLOW STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 4).setName("§eYELLOW STAINED GLASS PANE").toItemStack(),
+            53,
+            Color.YELLOW
+    ),
+    LIMESTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 5).setName("§aLIME STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 5).setName("§aLIME STAINED GLASS PANE").toItemStack(),
+            54,
+            Color.GREEN
+    ),
+    PINKSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 6).setName("§dPINK STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 6).setName("§dPINK STAINED GLASS PANE").toItemStack(),
+            55,
+            Color.PINK
+    ),
+    GRAYSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 7).setName("§8GRAY STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("§8GRAY STAINED GLASS PANE").toItemStack(),
+            56,
+            Color.GRAY
+    ),
+    LIGHTGRAYSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 8).setName("§7LIGHT GRAY STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 8).setName("§7LIGHT GRAY STAINED GLASS PANE").toItemStack(),
+            57,
+            Color.GRAY
+    ),
+    CYANSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 9).setName("§3CYAN STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 9).setName("§3CYAN STAINED GLASS PANE").toItemStack(),
+            58,
+            Color.CYAN
+    ),
+    PURPLESTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 10).setName("§5PURPLE STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 10).setName("§5PURPLE STAINED GLASS PANE").toItemStack(),
+            59,
+            Color.getHSBColor(0.8333333F, 1.0F, 0.5F)
+    ),
+    BLUESTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 11).setName("§9BLUE STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 11).setName("§9BLUE STAINED GLASS PANE").toItemStack(),
+            60,
+            Color.BLUE
+    ),
+    BROWNSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 12).setName("§6BROWN STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 12).setName("§6BROWN STAINED GLASS PANE").toItemStack(),
+            61,
+            Color.getHSBColor(0.08333333F, 1.0F, 0.5F)
+    ),
+    GREENSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 13).setName("§2GREEN STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 13).setName("§2GREEN STAINED GLASS PANE").toItemStack(),
+            62,
+            Color.GREEN
+    ),
+    REDSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 14).setName("§cRED STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName("§cRED STAINED GLASS PANE").toItemStack(),
+            63,
+            Color.RED
+    ),
+    BLACKSTAINEDGLASS_GENERATOR(
+            new ItemBuilder(Material.STAINED_GLASS, 1).setDurability((short) 15).setName("§0BLACK STAINED GLASS GENERATOR").toItemStack(),
+            new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 15).setName("§0BLACK STAINED GLASS PANE").toItemStack(),
+            64,
             Color.BLACK
     ),
 
 
-    //make a limited generator type
-//    LIMITED_GENERATOR(
-//            new ItemBuilder(Material.MELON_BLOCK, 1).setDurability((short) 9).setName("§cLIMITED GENERATOR").toItemStack(),
-//            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§cLIMITED DYE").toItemStack(),
-//            -1,
-//            Color.green
-//    ),
+
+    LIMITED1_GENERATOR(
+            new ItemBuilder(Material.MELON_BLOCK, 1).setDurability((short) 9).setName("§cLIMITED GENERATOR 1").toItemStack(),
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§cLIMITED DYE").toItemStack(),
+            -1,
+            Color.green
+    ),
+    LIMITED2_GENERATOR(
+            new ItemBuilder(Material.PACKED_ICE, 1).setDurability((short) 9).setName("§cLIMITED GENERATOR 2").toItemStack(),
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§cLIMITED DYE").toItemStack(),
+            -1,
+            Color.green
+    ),
+    LIMITED3_GENERATOR(
+            new ItemBuilder(Material.HAY_BLOCK, 1).setDurability((short) 9).setName("§cLIMITED GENERATOR 3").toItemStack(),
+            new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§cLIMITED DYE").toItemStack(),
+            -1,
+            Color.green
+    ),
 
     ;
 
@@ -355,6 +458,10 @@ public enum GeneratorType {
         return name;
     }
 
+    public String getDisplayName() {
+        return itemStack.getItemMeta().getDisplayName();
+    }
+
     public ItemStack getItemStack() {
         return itemStack.clone();
     }
@@ -368,7 +475,6 @@ public enum GeneratorType {
     }
 
     public enum UpgradePrice {
-        // add all from GeneratorType here
         GRASS_GENERATOR(100),
         STONE_GENERATOR(100),
         COALORE_GENERATOR(100),
@@ -385,6 +491,7 @@ public enum GeneratorType {
         REDSTONEBLOCK_GENERATOR(100),
         DIAMONDBLOCK_GENERATOR(100),
         EMERALDBLOCK_GENERATOR(100),
+
         WOOLWHITE_GENERATOR(100),
         WOOLORANGE_GENERATOR(100),
         WOOLMAGENTA_GENERATOR(100),
@@ -392,7 +499,52 @@ public enum GeneratorType {
         WOOLYELLOW_GENERATOR(100),
         WOOLLIME_GENERATOR(100),
         WOOLPINK_GENERATOR(100),
-        WOOLGRAY_GENERATOR(100),;
+        WOOLGRAY_GENERATOR(100),
+        WOOLLIGHTGRAY_GENERATOR(100),
+        WOOLCYAN_GENERATOR(100),
+        WOOLPURPLE_GENERATOR(100),
+        WOOLBLUE_GENERATOR(100),
+        WOOLBROWN_GENERATOR(100),
+        WOOLGREEN_GENERATOR(100),
+        WOOLRED_GENERATOR(100),
+        WOOLBLACK_GENERATOR(100),
+
+        CLAY_GENERATOR(100),
+        WHITESTAINEDCLAY_GENERATOR(100),
+        ORANGESTAINEDCLAY_GENERATOR(100),
+        MAGENTASTAINEDCLAY_GENERATOR(100),
+        LIGHTBLUESTAINEDCLAY_GENERATOR(100),
+        YELLOWSTAINEDCLAY_GENERATOR(100),
+        LIMESTAINEDCLAY_GENERATOR(100),
+        PINKSTAINEDCLAY_GENERATOR(100),
+        GRAYSTAINEDCLAY_GENERATOR(100),
+        LIGHTGRAYSTAINEDCLAY_GENERATOR(100),
+        CYANSTAINEDCLAY_GENERATOR(100),
+        PURPLESTAINEDCLAY_GENERATOR(100),
+        BLUESTAINEDCLAY_GENERATOR(100),
+        BROWNSTAINEDCLAY_GENERATOR(100),
+        GREENSTAINEDCLAY_GENERATOR(100),
+        REDSTAINEDCLAY_GENERATOR(100),
+        BLACKSTAINEDCLAY_GENERATOR(100),
+
+        WHITESTAINEDGLASS_GENERATOR(100),
+        ORANGESTAINEDGLASS_GENERATOR(100),
+        MAGENTASTAINEDGLASS_GENERATOR(100),
+        LIGHTBLUESTAINEDGLASS_GENERATOR(100),
+        YELLOWSTAINEDGLASS_GENERATOR(100),
+        LIMESTAINEDGLASS_GENERATOR(100),
+        PINKSTAINEDGLASS_GENERATOR(100),
+        GRAYSTAINEDGLASS_GENERATOR(100),
+        LIGHTGRAYSTAINEDGLASS_GENERATOR(100),
+        CYANSTAINEDGLASS_GENERATOR(100),
+        PURPLESTAINEDGLASS_GENERATOR(100),
+        BLUESTAINEDGLASS_GENERATOR(100),
+        BROWNSTAINEDGLASS_GENERATOR(100),
+        GREENSTAINEDGLASS_GENERATOR(100),
+        REDSTAINEDGLASS_GENERATOR(100),
+        BLACKSTAINEDGLASS_GENERATOR(100),
+
+        ;
 
 
         private final int price;
@@ -407,12 +559,79 @@ public enum GeneratorType {
     }
 
     public enum DropPrice {
-        // add all from GeneratorType here
         GRASS_GENERATOR(100, 100),
         STONE_GENERATOR(100, 100),
         COALORE_GENERATOR(100, 100),
         IRONORE_GENERATOR(100, 100),
-        GOLDORE_GENERATOR(100, 100),;
+        GOLDORE_GENERATOR(100, 100),
+        LAPISORE_GENERATOR(100, 100),
+        REDSTONEORE_GENERATOR(100, 100),
+        DIAMONDORE_GENERATOR(100, 100),
+        EMERALDORE_GENERATOR(100, 100),
+        COALBLOCK_GENERATOR(100, 100),
+        IRONBLOCK_GENERATOR(100, 100),
+        GOLDBLOCK_GENERATOR(100, 100),
+        LAPISBLOCK_GENERATOR(100, 100),
+        REDSTONEBLOCK_GENERATOR(100, 100),
+        DIAMONDBLOCK_GENERATOR(100, 100),
+        EMERALDBLOCK_GENERATOR(100, 100),
+
+        WOOLWHITE_GENERATOR(100, 100),
+        WOOLORANGE_GENERATOR(100, 100),
+        WOOLMAGENTA_GENERATOR(100, 100),
+        WOOLLIGHTBLUE_GENERATOR(100, 100),
+        WOOLYELLOW_GENERATOR(100, 100),
+        WOOLLIME_GENERATOR(100, 100),
+        WOOLPINK_GENERATOR(100, 100),
+        WOOLGRAY_GENERATOR(100, 100),
+        WOOLLIGHTGRAY_GENERATOR(100, 100),
+        WOOLCYAN_GENERATOR(100, 100),
+        WOOLPURPLE_GENERATOR(100, 100),
+        WOOLBLUE_GENERATOR(100, 100),
+        WOOLBROWN_GENERATOR(100, 100),
+        WOOLGREEN_GENERATOR(100, 100),
+        WOOLRED_GENERATOR(100, 100),
+        WOOLBLACK_GENERATOR(100, 100),
+
+        CLAY_GENERATOR(100, 100),
+        WHITESTAINEDCLAY_GENERATOR(100, 100),
+        ORANGESTAINEDCLAY_GENERATOR(100, 100),
+        MAGENTASTAINEDCLAY_GENERATOR(100, 100),
+        LIGHTBLUESTAINEDCLAY_GENERATOR(100, 100),
+        YELLOWSTAINEDCLAY_GENERATOR(100, 100),
+        LIMESTAINEDCLAY_GENERATOR(100, 100),
+        PINKSTAINEDCLAY_GENERATOR(100, 100),
+        GRAYSTAINEDCLAY_GENERATOR(100, 100),
+        LIGHTGRAYSTAINEDCLAY_GENERATOR(100, 100),
+        CYANSTAINEDCLAY_GENERATOR(100, 100),
+        PURPLESTAINEDCLAY_GENERATOR(100, 100),
+        BLUESTAINEDCLAY_GENERATOR(100, 100),
+        BROWNSTAINEDCLAY_GENERATOR(100, 100),
+        GREENSTAINEDCLAY_GENERATOR(100, 100),
+        REDSTAINEDCLAY_GENERATOR(100, 100),
+        BLACKSTAINEDCLAY_GENERATOR(100, 100),
+
+        WHITESTAINEDGLASS_GENERATOR(100, 100),
+        ORANGESTAINEDGLASS_GENERATOR(100, 100),
+        MAGENTASTAINEDGLASS_GENERATOR(100, 100),
+        LIGHTBLUESTAINEDGLASS_GENERATOR(100, 100),
+        YELLOWSTAINEDGLASS_GENERATOR(100, 100),
+        LIMESTAINEDGLASS_GENERATOR(100, 100),
+        PINKSTAINEDGLASS_GENERATOR(100, 100),
+        GRAYSTAINEDGLASS_GENERATOR(100, 100),
+        LIGHTGRAYSTAINEDGLASS_GENERATOR(100, 100),
+        CYANSTAINEDGLASS_GENERATOR(100, 100),
+        PURPLESTAINEDGLASS_GENERATOR(100, 100),
+        BLUESTAINEDGLASS_GENERATOR(100, 100),
+        BROWNSTAINEDGLASS_GENERATOR(100, 100),
+        GREENSTAINEDGLASS_GENERATOR(100, 100),
+        REDSTAINEDGLASS_GENERATOR(100, 100),
+        BLACKSTAINEDGLASS_GENERATOR(100, 100),
+
+        LIMITED1_GENERATOR(100, 100),
+        LIMITED2_GENERATOR(100, 100),
+        LIMITED3_GENERATOR(100, 100),
+        ;
 
         private final double price;
         private final long xp;

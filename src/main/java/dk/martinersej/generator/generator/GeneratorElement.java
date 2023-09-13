@@ -12,7 +12,7 @@ public abstract class GeneratorElement {
 
     public GeneratorElement(UUID owner, Location location) {
         this.owner = owner;
-        this.location = location;
+        this.location = location.clone();
     }
 
     public UUID getOwner() {

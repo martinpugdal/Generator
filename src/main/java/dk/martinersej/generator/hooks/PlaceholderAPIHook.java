@@ -1,4 +1,4 @@
-package dk.martinersej.generator.hook;
+package dk.martinersej.generator.hooks;
 
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorUser;

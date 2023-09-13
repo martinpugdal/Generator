@@ -1,6 +1,5 @@
 package dk.martinersej.generator.command;
 
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import dk.martinersej.generator.generator.GeneratorType;
@@ -18,33 +17,34 @@ public class GenlistCommand extends Command implements CommandExecutor {
         super(plugin);
     }
 
+    @Deprecated
     @Override
     public boolean onCommand(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {
             return false;
         }
-        PaginatedGui genlistGui = new PaginatedGui(5, "Generators");
-        genlistGui.setDefaultClickAction(event -> event.setCancelled(true));
+        PaginatedGui genListGui = new PaginatedGui(5, "§6Generatorer");
+        genListGui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        ItemStack itemStack = new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 4).toItemStack();
+        ItemStack itemStack = new ItemBuilder(Material.ARROW).toItemStack();
 
-        genlistGui.getFiller().fillBorder(new GuiItem(itemStack));
+        genListGui.getFiller().fillBorder(new GuiItem(itemStack));
 
         for (GeneratorType generatorType : GeneratorType.values()) {
-            genlistGui.addItem(new GuiItem(generatorType.getItemStack()));
+            genListGui.addItem(new GuiItem(generatorType.getItemStack()));
         }
 
-        GuiItem backItem = new GuiItem(new ItemBuilder(Material.BARRIER).setName("Forrige side").toItemStack(), event -> {
-            genlistGui.previous();
+        GuiItem backItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("Forrige side").toItemStack(), event -> {
+            genListGui.previous();
         });
-        genlistGui.setItem(3, 1, backItem);
+        genListGui.setItem(3, 1, backItem);
 
         GuiItem nextPageItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("Næste side").toItemStack(), event -> {
-            genlistGui.next();
+            genListGui.next();
         });
-        genlistGui.setItem(3, 9, nextPageItem);
+        genListGui.setItem(3, 9, nextPageItem);
 
-        genlistGui.open((Player) commandSender);
+        genListGui.open((Player) commandSender);
         return true;
     }
 

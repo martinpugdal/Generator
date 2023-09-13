@@ -76,14 +76,16 @@ public class Command {
     public List<String> getAllowedSubCommands(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] strings) {
         ArrayList<String> allowedSubCommands = new ArrayList<>();
         for (SubCommand subCommand : this.getSubCommands()) {
-            if (hasPermission(commandSender, subCommand.getPermissions())) {
-                System.out.println(strings.length);
-                System.out.println(subCommand.getUsage(strings[0]));
-                System.out.println("----------------------------------------");
-                if (strings.length == 0) {
-                    allowedSubCommands.add(subCommand.getUsage(label));
-                } else if (subCommand.getUsage(label).startsWith(strings[0])) {
-                    allowedSubCommands.add(subCommand.getUsage(strings[0]));
+            if (hasPermission(commandSender, subCommand.getPermissions()) && strings.length == 1) {
+                if (subCommand.containsAlias(strings[0])) {
+                    allowedSubCommands.add(subCommand.getAliases()[0]);
+                } else {
+                    for (String alias : subCommand.getAliases()) {
+                        if (alias.startsWith(strings[0])) {
+                            allowedSubCommands.add(alias);
+                            break;
+                        }
+                    }
                 }
             }
         }

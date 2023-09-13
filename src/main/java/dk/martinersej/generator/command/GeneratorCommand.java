@@ -11,7 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-public class GeneratorCommand extends Command implements CommandExecutor {
+public class GeneratorCommand extends Command implements CommandExecutor, TabCompleter {
+
     public GeneratorCommand(JavaPlugin plugin) {
         super(plugin);
         addSubCommand(new GeneratorGiveCommand(plugin));
@@ -20,7 +21,7 @@ public class GeneratorCommand extends Command implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
         CommandResult result = super.execute(commandSender, strings);
-        switch(result.getResult()) {
+        switch (result.getResult()) {
             case WRONG_USAGE:
                 commandSender.sendMessage(String.format("Korrekt brug: %s", result.getSubCommand().getUsage(s)));
                 return true;
@@ -30,7 +31,7 @@ public class GeneratorCommand extends Command implements CommandExecutor {
             case NO_SUB_COMMAND_FOUND:
                 commandSender.sendMessage("Det er ikke en gyldig subkommando");
                 commandSender.sendMessage("Gyldige subkommandoer:");
-                for(SubCommand cmd : super.getSubCommands()) {
+                for (SubCommand cmd : super.getSubCommands()) {
                     commandSender.sendMessage("- " + cmd.getUsage(cmd.getAliases()[0]) + " - " + cmd.getDescription());
                 }
                 return true;
@@ -38,8 +39,8 @@ public class GeneratorCommand extends Command implements CommandExecutor {
         return true;
     }
 
-//    @Override
-//    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
-//        return getAllowedSubCommands(commandSender, command, s, strings);
-//    }
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
+        return getAllowedSubCommands(commandSender, command, s, strings);
+    }
 }

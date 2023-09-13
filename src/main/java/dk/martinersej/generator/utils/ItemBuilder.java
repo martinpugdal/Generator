@@ -86,6 +86,16 @@ public class ItemBuilder {
     }
 
     /**
+     * Set the amount of the item.
+     *
+     * @param amount The amount to change it to.
+     */
+    public ItemBuilder setAmount(int amount) {
+        is.setAmount(amount);
+        return this;
+    }
+
+    /**
      * Set the displayname of the item.
      *
      * @param name The name to change it to.
@@ -95,6 +105,14 @@ public class ItemBuilder {
         im.setDisplayName(name);
         is.setItemMeta(im);
         return this;
+    }
+
+    /**
+     * Get the name of the item.
+     */
+    public String getName() {
+        ItemMeta im = is.getItemMeta();
+        return im.getDisplayName();
     }
 
     /**

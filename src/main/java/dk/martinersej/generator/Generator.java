@@ -2,7 +2,8 @@ package dk.martinersej.generator;
 
 import dk.martinersej.generator.command.GeneratorCommand;
 import dk.martinersej.generator.command.GenlistCommand;
-import dk.martinersej.generator.hook.PlaceholderAPIHook;
+import dk.martinersej.generator.command.singlecommands.DiscordCommand;
+import dk.martinersej.generator.hooks.PlaceholderAPIHook;
 import dk.martinersej.generator.listeners.*;
 import dk.martinersej.generator.managers.DatabaseManager;
 import dk.martinersej.generator.managers.GeneratorManager;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 
 public final class Generator extends JavaPlugin {
 
-    public static final long GENERATOR_DROP_RATE = 20 * 6; // 6 seconds
+    public static final long GENERATOR_DROP_RATE = 20 * 8; // 8 seconds
     private static Generator instance;
     private static DatabaseManager databaseManager;
     private static GeneratorManager generatorManager;
@@ -62,6 +63,10 @@ public final class Generator extends JavaPlugin {
         registerListeners();
         registerCommands();
 
+        runHooks();
+    }
+
+    private void runHooks() {
         new PlaceholderAPIHook(this);
     }
 
@@ -78,6 +83,8 @@ public final class Generator extends JavaPlugin {
     }
 
     private void registerCommands() {
+        this.getCommand("discord").setExecutor(new DiscordCommand(this));
+
         this.getCommand("generator").setExecutor(new GeneratorCommand(this));
         this.getCommand("genlist").setExecutor(new GenlistCommand(this));
     }

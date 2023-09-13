@@ -1,4 +1,4 @@
-package dk.martinersej.generator.hook;
+package dk.martinersej.generator.hooks;
 
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;

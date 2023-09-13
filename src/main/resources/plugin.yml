@@ -10,4 +10,5 @@ softdepend:
 commands:
   generator:
   genlist:
+  discord:
 database: true

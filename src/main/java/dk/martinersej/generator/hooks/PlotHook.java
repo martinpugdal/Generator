@@ -1,4 +1,4 @@
-package dk.martinersej.generator.hook;
+package dk.martinersej.generator.hooks;
 
 import com.intellectualcrafters.plot.api.PlotAPI;
 import com.intellectualcrafters.plot.object.Plot;

@@ -6,18 +6,20 @@ import dk.martinersej.generator.generator.GeneratorItem;
 import dk.martinersej.generator.generator.GeneratorUser;
 import dk.martinersej.generator.generator.block.GeneratorBlockItem;
 import dk.martinersej.generator.generator.chest.GeneratorChestItem;
+import dk.martinersej.generator.hooks.PlotHook;
 import dk.martinersej.generator.utils.GeneratorUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class OnGeneratorPlace implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onGeneratorPlace(BlockPlaceEvent event) {
-        if (!event.canBuild()) {
+        if (event.isCancelled()) {
             return;
         }
 
@@ -35,6 +37,7 @@ public class OnGeneratorPlace implements Listener {
         if (generatorItem == null) {
             return;
         }
+
         if (generatorItem instanceof GeneratorChestItem) {
             if (Generator.getUserManager().getUser(player.getUniqueId()).getGeneratorChest() != null) {
                 player.sendMessage("§c§oDu har allerede en generator chest");

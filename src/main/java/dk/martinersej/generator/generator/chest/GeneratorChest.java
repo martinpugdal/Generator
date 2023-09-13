@@ -6,42 +6,58 @@ import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
 import dk.martinersej.generator.generator.GeneratorType;
-import dk.martinersej.generator.hook.VaultHook;
+import dk.martinersej.generator.hooks.VaultHook;
+import dk.martinersej.generator.utils.GUI;
 import dk.martinersej.generator.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
 public class GeneratorChest extends GeneratorElement {
     private final WeakHashMap<GeneratorType, Integer> drops = new WeakHashMap<>();
-    private final PaginatedGui gui = new PaginatedGui(5, "§aGenerator Chest");
+    private final PaginatedGui gui;
+    private final GeneratorChestGUI sellGUI;
 
     public GeneratorChest(Location location, UUID owner) {
         super(owner, location);
         Generator.getUserManager().getUser(owner).setGeneratorChest(this);
+        gui = new PaginatedGui(5, "§aGenerator Chest" + " §7- §e" + Bukkit.getOfflinePlayer(owner).getName());
+        sellGUI = new GeneratorChestGUI("§aGenerator Chest" + " §7- §e" + Bukkit.getOfflinePlayer(owner).getName(), 5, drops);
         gui.disableAllInteractions();
         GuiItem filler = new GuiItem(new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 13).setName(" ").toItemStack());
-        gui.getFiller().fillBottom(filler);
         gui.getFiller().fillTop(filler);
+        sellGUI.setRow(new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 13).setName(" ").toItemStack(), 0);
+        sellGUI.setRow(new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 13).setName(" ").toItemStack(), 4);
+        gui.getFiller().fillBottom(filler);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         GuiItem backItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("§aForrige side").toItemStack());
         GuiItem nextPageItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("§aNæste side").toItemStack());
         backItem.setAction(event -> {
             gui.previous();
+            if (gui.getPagesNum() > 1) {
+                gui.setItem(5, 3, backItem);
+            } else {
+                gui.setItem(5, 3, filler);
+            }
         });
         nextPageItem.setAction(event -> {
             gui.next();
+            if (gui.getPagesNum() == gui.getCurrentPageNum()) {
+                gui.setItem(5, 7, filler);
+            } else {
+                gui.setItem(5, 7, filler);
+            }
         });
         gui.setItem(5, 3, backItem);
         gui.setItem(5, 7, nextPageItem);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public GeneratorItem createItem() {
         return new GeneratorChestItem();
@@ -62,27 +78,27 @@ public class GeneratorChest extends GeneratorElement {
     }
 
     public void openGUI(Player player) {
-        gui.open(player);
+//        gui.open(player);
+        sellGUI.open(player);
     }
 
     public void updateGui() {
+        gui.clearPageItems();
+        sellGUI.clearItems();
         for (GeneratorType generatorType : GeneratorType.values()) {
-            gui.updatePageItem(generatorType.ordinal() + 9, new ItemStack(Material.AIR));
             if (!drops.containsKey(generatorType)) {
                 continue;
             }
-            GuiItem guiItem = new GuiItem(generatorType.getDrop());
-            ItemMeta itemMeta = guiItem.getItemStack().getItemMeta().clone();
-            itemMeta.setLore(Arrays.asList("", "§7Klik for at sælge alle " + itemMeta.getDisplayName(), ""));
-            itemMeta.setDisplayName(itemMeta.getDisplayName() + " §7x§a" + drops.get(generatorType));
-            guiItem.getItemStack().setItemMeta(itemMeta);
-            guiItem.getItemStack().setAmount(1);
-            GeneratorType generatorTypeCopy = generatorType;
+            ItemBuilder itemBuilder = new ItemBuilder(generatorType.getDrop());
+            itemBuilder.setLore(Arrays.asList("", "§7Klik for at sælge alle " + itemBuilder.toItemStack().getItemMeta().getDisplayName(), ""));
+            itemBuilder.setName(itemBuilder.toItemStack().getItemMeta().getDisplayName() + " §7x§a" + drops.get(generatorType));
+            itemBuilder.setAmount(1);
+            GuiItem guiItem = new GuiItem(itemBuilder.toItemStack());
             guiItem.setAction(event -> {
                 long generetorAmount = drops.get(generatorType);
                 if (generetorAmount > 0) {
-                    sell(event.getWhoClicked().getUniqueId(), generatorTypeCopy, generetorAmount);
-                    gui.updateItem(event.getSlot(), new ItemStack(Material.AIR));
+                    sell(event.getWhoClicked().getUniqueId(), generatorType, generetorAmount);
+                    gui.updatePageItem(event.getSlot(), new ItemStack(Material.AIR));
                     guiItem.setAction(null);
                 }
             });
@@ -92,9 +108,8 @@ public class GeneratorChest extends GeneratorElement {
     }
 
     private long sell(GeneratorType generatorType, long amount) {
-        GeneratorType generatorTypeCopy = generatorType;
         removeDrop(generatorType);
-        double price = GeneratorType.DropPrice.valueOf(generatorTypeCopy.name()).getPrice();
+        double price = GeneratorType.DropPrice.valueOf(generatorType.name()).getPrice();
         return (long) (price * amount);
     }
 
@@ -110,7 +125,6 @@ public class GeneratorChest extends GeneratorElement {
             ownerOfChest.sendMessage("§e" + playerSold.getName() + " §asolgte for §e" + total + " §amed en multiplier på §e" + multiplier + " §a!");
         }
         playerSold.sendMessage("§aDu solgte for §e" + total + " §amed en multiplier på §e" + multiplier + " §a!");
-
     }
 
     public void sellAll(UUID uuid) {
