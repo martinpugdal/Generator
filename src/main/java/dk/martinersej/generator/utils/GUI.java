@@ -1,6 +1,5 @@
 package dk.martinersej.generator.utils;
 
-import dk.martinersej.generator.Generator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -53,11 +52,23 @@ public abstract class GUI implements InventoryHolder {
         items.put(slot, item);
     }
 
+    public void setItem(int row, int col, ItemStack item) {
+        setItem((row-1) * 9 + col, item);
+    }
+
     public void updateItem(int slot, ItemStack item) {
-        items.replace(slot, item);
+        if (items.get(slot) == null) {
+            items.put(slot, item);
+        } else {
+            items.replace(slot, item);
+        }
         for (HumanEntity viewer : inventory.getViewers()) {
             viewer.getOpenInventory().setItem(slot, item);
         }
+    }
+
+    public void updateItem(int row, int col, ItemStack item) {
+        updateItem((row-1) * 9 + col, item);
     }
 
     public void clearItems() {
@@ -73,7 +84,7 @@ public abstract class GUI implements InventoryHolder {
                 }
                 updateItem(slot, supplier.get());
             }
-        }.runTaskTimer(Generator.getInstance(), 0L, 1L);
+        }.runTaskTimer(Bukkit.getPluginManager().getPlugin(getClass().getPackage().getName().split("^\\w+")[0]), 0L, 1L);
     }
 
     public void rerender() {
@@ -97,6 +108,15 @@ public abstract class GUI implements InventoryHolder {
         for (int i : row) {
             for (int j = 0; j < 9; j++) {
                 int slot = i * 9 + j;
+                setItem(slot, item);
+            }
+        }
+    }
+
+    public void setCol(ItemStack item, int... col) {
+        for (int i : col) {
+            for (int j = 0; j < rows; j++) {
+                int slot = j * 9 + i;
                 setItem(slot, item);
             }
         }

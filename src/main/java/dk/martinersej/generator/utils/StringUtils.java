@@ -1,6 +1,7 @@
 package dk.martinersej.generator.utils;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.bukkit.inventory.ItemStack;
 
 public class StringUtils {
 
@@ -39,5 +40,14 @@ public class StringUtils {
                 sb.append("§c§l|");
         }
         return sb.toString();
+    }
+
+    public static boolean isNumeric(String string) {
+        try {
+            Double.parseDouble(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

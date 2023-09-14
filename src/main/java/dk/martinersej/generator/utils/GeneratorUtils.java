@@ -37,7 +37,7 @@ public class GeneratorUtils {
         return type;
     }
 
-    private static String getNbt(ItemStack stack, String key) {
+    public static String getNbt(ItemStack stack, String key) {
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
         NBTTagCompound nbt = null;
         try {

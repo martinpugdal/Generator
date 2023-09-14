@@ -88,6 +88,10 @@ public class GeneratorUser {
         return generatorSlots;
     }
 
+    public void addGeneratorSlots(long generatorSlots) {
+        this.generatorSlots += generatorSlots;
+    }
+
     public void setGeneratorSlots(long generatorSlots) {
         this.generatorSlots = generatorSlots;
     }

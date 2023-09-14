@@ -73,6 +73,8 @@ public final class Generator extends JavaPlugin {
     private void registerListeners() {
         this.getServer().getPluginManager().registerEvents(new GlobalListeners(), this);
 
+        this.getServer().getPluginManager().registerEvents(new OnGuiClick(), this);
+
         this.getServer().getPluginManager().registerEvents(new OnGeneratorPlace(), this);
         this.getServer().getPluginManager().registerEvents(new OnGeneratorBreak(), this);
         this.getServer().getPluginManager().registerEvents(new OnGeneratorChestRightClick(), this);

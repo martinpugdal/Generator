@@ -441,6 +441,8 @@ public enum GeneratorType {
         return null;
     }
 
+
+
     public static GeneratorType getNextGeneratorType(GeneratorType generatorType) {
         for (GeneratorType type : GeneratorType.values()) {
             if (type.getTier() == generatorType.getTier() + 1) {
