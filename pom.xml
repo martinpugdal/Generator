@@ -52,10 +52,11 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
+        <!-- dont need spigot repository because its in my local m2 -->
+<!--        <repository>-->
+<!--            <id>spigot-repo</id>-->
+<!--            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>-->
+<!--        </repository>-->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>

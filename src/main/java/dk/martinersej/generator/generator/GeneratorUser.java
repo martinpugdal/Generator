@@ -13,15 +13,15 @@ public class GeneratorUser {
     private final UUID uuid;
     private final Set<GeneratorBlock> generatorBlocks = Collections.synchronizedSet(new HashSet<>());
     private long generatorSlots = 25;
-    private long multiplier = 1;
-    private long xp = 0;
+    private double multiplier = 1;
+    private double xp = 0;
     private GeneratorChest generatorChest;
 
     public GeneratorUser(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public GeneratorUser(UUID uuid, long multiplier, long xp, long generatorSlots) {
+    public GeneratorUser(UUID uuid, double multiplier, double xp, long generatorSlots) {
         this(uuid);
         this.multiplier = multiplier;
         this.xp = xp;
@@ -44,7 +44,7 @@ public class GeneratorUser {
         this.generatorChest = generatorChest;
     }
 
-    public long getMultiplier() {
+    public double getMultiplier() {
         return multiplier;
     }
 
@@ -60,7 +60,7 @@ public class GeneratorUser {
         this.multiplier -= multiplier;
     }
 
-    public long getXp() {
+    public double getXp() {
         return xp;
     }
 
@@ -68,7 +68,7 @@ public class GeneratorUser {
         this.xp = xp;
     }
 
-    public void addXp(long xp) {
+    public void addXp(double xp) {
         this.xp += xp;
     }
 

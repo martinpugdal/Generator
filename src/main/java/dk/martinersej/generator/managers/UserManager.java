@@ -32,8 +32,8 @@ public class UserManager {
                 ResultSet resultSet = stmt.executeQuery();
                 while (resultSet.next()) {
                     UUID uuid = UUID.fromString(resultSet.getString(1));
-                    long xp = resultSet.getInt(2);
-                    long multiplier = resultSet.getLong(3);
+                    double xp = resultSet.getDouble(2);
+                    double multiplier = resultSet.getDouble(3);
                     long generatorSlots = resultSet.getLong(4);
                     users.put(uuid, new GeneratorUser(uuid, multiplier, xp, generatorSlots));
                 }
@@ -98,8 +98,8 @@ public class UserManager {
                         "WHERE " +
                             "uuid = ?"
                 );
-                stmt.setLong(1, user.getXp());
-                stmt.setLong(2, user.getMultiplier());
+                stmt.setDouble(1, user.getXp());
+                stmt.setDouble(2, user.getMultiplier());
                 stmt.setLong(3, user.getGeneratorSlots());
                 stmt.setString(4, user.getUUID().toString());
             } catch(SQLException ex) {
@@ -125,8 +125,8 @@ public class UserManager {
                                         "uuid = ?"
                         );
                         for (GeneratorUser user : users1) {
-                            stmt.setLong(1, user.getXp());
-                            stmt.setLong(2, user.getMultiplier());
+                            stmt.setDouble(1, user.getXp());
+                            stmt.setDouble(2, user.getMultiplier());
                             stmt.setLong(3, user.getGeneratorSlots());
                             stmt.setString(4, user.getUUID().toString());
                             stmt.addBatch();

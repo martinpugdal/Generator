@@ -636,9 +636,9 @@ public enum GeneratorType {
         ;
 
         private final double price;
-        private final long xp;
+        private final double xp;
 
-        DropPrice(double price, long xp) {
+        DropPrice(double price, double xp) {
             this.price = price;
             this.xp = xp;
         }
@@ -647,7 +647,7 @@ public enum GeneratorType {
             return price;
         }
 
-        public long getXp() {
+        public double getXp() {
             return xp;
         }
     }
