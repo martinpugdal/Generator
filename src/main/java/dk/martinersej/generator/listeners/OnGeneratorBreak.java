@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.WeakHashMap;
 
 public class OnGeneratorBreak implements Listener {
@@ -59,7 +60,7 @@ public class OnGeneratorBreak implements Listener {
                 return;
             }
             for (GeneratorType generatorType : drops.keySet()) {
-                if (drops.containsKey(generatorType)) {
+                if (!drops.containsKey(generatorType)) {
                     continue;
                 }
                 ItemStack itemStack = generatorType.getDrop();
@@ -68,7 +69,10 @@ public class OnGeneratorBreak implements Listener {
             }
         }
         location.getBlock().setType(Material.AIR);
-        location.getWorld().dropItemNaturally(location, element.createItem().toItemStack());
+        HashMap<Integer, ItemStack> leftOvers = player.getInventory().addItem(element.createItem().toItemStack());
+        if (!leftOvers.isEmpty()) {
+            location.getWorld().dropItemNaturally(location, element.createItem().toItemStack());
+        }
         Generator.getGeneratorManager().removeElement(element);
     }
 }

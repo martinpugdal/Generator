@@ -60,7 +60,6 @@ public class GeneratorManager {
                                 stmt.setInt(3, drops.getValue());
                                 stmt.addBatch();
                             }
-//                            System.out.println("Saving drops for chest " + chest.getId() + "...");
                         }
                         stmt.executeBatch();
                     } catch (SQLException ex) {

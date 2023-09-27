@@ -1,15 +1,18 @@
 package dk.martinersej.generator.generator.chest;
 
 import dk.martinersej.generator.generator.GeneratorType;
-import dk.martinersej.generator.utils.GUI;
 import dk.martinersej.generator.utils.GeneratorUtils;
 import dk.martinersej.generator.utils.ItemBuilder;
 import dk.martinersej.generator.utils.StringUtils;
-import org.bukkit.Bukkit;
+import dk.martinersej.generator.utils.gui.BaseGui;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class GeneratorChestGUI extends GUI {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class GeneratorChestGUI extends BaseGui {
 
     private final GeneratorChest generatorChest;
     private int currentPage = 1;
@@ -21,17 +24,18 @@ public class GeneratorChestGUI extends GUI {
         updateGui();
     }
 
-    private void SetPageItems() {
+    private void setPageItems() {
         ItemBuilder backItem = new ItemBuilder(Material.ARROW).setName("§aForrige side");
         ItemBuilder nextPageItem = new ItemBuilder(Material.ARROW).setName("§aNæste side");
         if (currentPage != 1) {
-            backItem.setAmount(currentPage);
+            backItem.setAmount(currentPage - 1);
             setItem(5, 2, backItem.toItemStack());
         } else {
             setItem(5, 2, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 13).setName(" ").toItemStack());
         }
+        maxPage = (int) Math.ceil(generatorChest.getDrops().size() / 27.0);
         if (currentPage < maxPage) {
-            nextPageItem.setAmount(currentPage);
+            nextPageItem.setAmount(currentPage + 1);
             setItem(5, 6, nextPageItem.toItemStack());
         } else {
             setItem(5, 6, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((short) 13).setName(" ").toItemStack());
@@ -44,7 +48,7 @@ public class GeneratorChestGUI extends GUI {
     }
 
     @Override
-    public void onGUIClick(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         event.setCancelled(true);
 
         if (event.getCurrentItem().getType().equals(Material.ARROW)) {
@@ -54,8 +58,7 @@ public class GeneratorChestGUI extends GUI {
                 previousPage();
             }
             updateGui();
-        }
-        else {
+        } else {
             String generatorTypeString = GeneratorUtils.getNbt(event.getCurrentItem(), "GeneratorType");
             if (generatorTypeString == null || !StringUtils.isNumeric(generatorTypeString)) {
                 return;
@@ -64,8 +67,9 @@ public class GeneratorChestGUI extends GUI {
             if (generatorType == null) {
                 return;
             }
-            generatorChest.sell(event.getWhoClicked().getUniqueId(), generatorType, generatorType.getDrop().getAmount());
+            generatorChest.sell(event.getWhoClicked().getUniqueId(), generatorType, generatorChest.getDrops().get(generatorType));
             updateItem(event.getSlot(), new ItemBuilder(Material.AIR).toItemStack());
+            setPageItems();
         }
     }
 
@@ -86,27 +90,28 @@ public class GeneratorChestGUI extends GUI {
     public void updateGui() {
         clearItems();
         setDecoration();
-        SetPageItems();
-        maxPage = (int) Math.ceil(generatorChest.getDrops().size() / 27.0);
-        Object[] arrayDrops = generatorChest.getDrops().keySet().toArray();
-        /*
-            TODO: change this code to use for-loop, so the elements will be added in the correct order.
-         */
-        for (int i = currentPage * 27 - 27; i < generatorChest.getDrops().values().size(); i++) {
-            int slot = i - (currentPage * 27 - 27) + 9;
-            if (slot >= 27) {
+        setPageItems();
+        int slot = 9;
+        List<GeneratorType> generatorTypes = new ArrayList<>(generatorChest.getDrops().keySet());
+        if (generatorTypes.isEmpty()) {
+            return;
+        }
+        Collections.sort(generatorTypes);
+        for (int i = 0; i < generatorTypes.size(); i++) {
+            if (slot >= 36) {
                 break;
             }
-            GeneratorType generatorType = (GeneratorType) arrayDrops[i];
-            if (!generatorChest.getDrops().containsKey(generatorType)) {
+            if (i < (currentPage - 1) * 27) {
                 continue;
             }
+            GeneratorType generatorType = generatorTypes.get(i);
             int amount = generatorChest.getDrops().get(generatorType);
             ItemBuilder itemBuilder = new ItemBuilder(generatorType.getDrop().clone())
                     .setName(generatorType.getDrop().getItemMeta().getDisplayName() + " §7x§a" + amount)
                     .setLore("§7Klik for at sælge alle " + generatorType.getName(), "§7x§a" + amount)
                     .setNbt("GeneratorType", String.valueOf(generatorType.getTier()));
             setItem(slot, itemBuilder.toItemStack());
+            slot++;
         }
         rerender();
     }

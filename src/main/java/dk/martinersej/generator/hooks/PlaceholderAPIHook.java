@@ -40,7 +40,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String text) {
+    public String onRequest(OfflinePlayer player, @NotNull String text) {
 
         if (player == null) {
             return "";
@@ -62,7 +62,12 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             double dropRatePrMinute = (double) 60 / Generator.GENERATOR_DROP_RATE;
             double dropRatePrSec = dropRatePrMinute / 60;
             double dropRate = dropRatePrSec * generatorUser.getGenerators().size();
-            dropRate = Math.round(dropRate * 100.0) / 100.0;
+            dropRate = Math.floor(dropRate * 100.0) / 100.0;
+            return String.valueOf(dropRate);
+        } else if (text.equalsIgnoreCase("dyesprmin")) {
+            double dropRatePrMinute = (double) 60 / Generator.GENERATOR_DROP_RATE;
+            double dropRate = dropRatePrMinute * generatorUser.getGenerators().size();
+            dropRate = Math.floor(dropRate * 100.0) / 100.0;
             return String.valueOf(dropRate);
         }
 

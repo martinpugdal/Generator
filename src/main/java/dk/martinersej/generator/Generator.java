@@ -8,6 +8,7 @@ import dk.martinersej.generator.listeners.*;
 import dk.martinersej.generator.managers.DatabaseManager;
 import dk.martinersej.generator.managers.GeneratorManager;
 import dk.martinersej.generator.managers.UserManager;
+import dk.martinersej.generator.utils.gui.OnGuiClick;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;

@@ -397,7 +397,6 @@ public enum GeneratorType {
     ),
 
 
-
     LIMITED1_GENERATOR(
             new ItemBuilder(Material.MELON_BLOCK, 1).setDurability((short) 9).setName("§cLIMITED GENERATOR 1").toItemStack(),
             new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§cLIMITED DYE").toItemStack(),
@@ -408,13 +407,13 @@ public enum GeneratorType {
             new ItemBuilder(Material.PACKED_ICE, 1).setDurability((short) 9).setName("§cLIMITED GENERATOR 2").toItemStack(),
             new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§cLIMITED DYE").toItemStack(),
             -1,
-            Color.green
+            Color.white
     ),
     LIMITED3_GENERATOR(
             new ItemBuilder(Material.HAY_BLOCK, 1).setDurability((short) 9).setName("§cLIMITED GENERATOR 3").toItemStack(),
             new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 3).setName("§cLIMITED DYE").toItemStack(),
             -1,
-            Color.green
+            Color.yellow
     ),
 
     ;
@@ -436,17 +435,6 @@ public enum GeneratorType {
         for (GeneratorType generatorType : GeneratorType.values()) {
             if (generatorType.getTier() == tier) {
                 return generatorType;
-            }
-        }
-        return null;
-    }
-
-
-
-    public static GeneratorType getNextGeneratorType(GeneratorType generatorType) {
-        for (GeneratorType type : GeneratorType.values()) {
-            if (type.getTier() == generatorType.getTier() + 1) {
-                return type;
             }
         }
         return null;

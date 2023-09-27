@@ -3,7 +3,6 @@ package dk.martinersej.generator.utils;
 import dk.martinersej.generator.Generator;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -50,6 +49,6 @@ public class ParticleUtils {
                 p1.add(vector);
                 length[0] += space;
             }
-        }.runTaskTimer(Generator.getInstance(), 0L, 1L);
+        }.runTaskTimerAsynchronously(Generator.getInstance(), 0L, 1L);
     }
 }

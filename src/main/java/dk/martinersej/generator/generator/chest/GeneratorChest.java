@@ -5,6 +5,7 @@ import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
 import dk.martinersej.generator.generator.GeneratorType;
 import dk.martinersej.generator.hooks.VaultHook;
+import dk.martinersej.generator.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -65,9 +66,9 @@ public class GeneratorChest extends GeneratorElement {
         Generator.getUserManager().getUser(uuid).addXp(GeneratorType.DropPrice.valueOf(generatorType.name()).getXp() * amount);
         Player ownerOfChest = Bukkit.getPlayer(getOwner());
         if (ownerOfChest != playerSold) {
-            ownerOfChest.sendMessage("§e" + playerSold.getName() + " §asolgte for §e" + total + " §amed en multiplier på §e" + multiplier + " §a!");
+            ownerOfChest.sendMessage("§e" + playerSold.getName() + " §asolgte for §e" + StringUtils.formatNumber(total) + " §amed en multiplier på §e" + multiplier + " §a!");
         }
-        playerSold.sendMessage("§aDu solgte for §e" + total + " §amed en multiplier på §e" + multiplier + " §a!");
+        playerSold.sendMessage("§aDu solgte for §e" + StringUtils.formatNumber(total) + " §amed en multiplier på §e" + multiplier + " §a!");
     }
 
     public void sellAll(UUID uuid) {
@@ -75,6 +76,7 @@ public class GeneratorChest extends GeneratorElement {
         double xpTotal = 0;
         double multiplier = Generator.getUserManager().getUser(uuid).getMultiplier();
         Set<Map.Entry<GeneratorType, Integer>> drops = new HashSet<>(this.drops.entrySet());
+
         for (Map.Entry<GeneratorType, Integer> drop : drops) {
             sellTotal += sell(drop.getKey(), drop.getValue());
             xpTotal += GeneratorType.DropPrice.valueOf(drop.getKey().name()).getXp() * drop.getValue();
@@ -87,7 +89,7 @@ public class GeneratorChest extends GeneratorElement {
         if (ownerOfChest != playerSold && ownerOfChest != null) {
             ownerOfChest.sendMessage("§e" + playerSold.getName() + " §asolgte alle drops fra din generator chest!");
         }
-        playerSold.sendMessage("§aDu solgte alle drops for §e" + sellTotal + " §amed en multiplier på §e" + multiplier + " §a!");
+        playerSold.sendMessage("§aDu solgte alle drops for §e" + StringUtils.formatNumber(sellTotal) + " §amed en multiplier på §e" + multiplier + " §a!");
         gui.updateGui();
     }
 

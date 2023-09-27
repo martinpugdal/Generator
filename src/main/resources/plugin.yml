@@ -1,5 +1,5 @@
 name: Generator
-authors: [MartinErSej]
+authors: [ MartinErSej ]
 version: '${project.version}'
 main: dk.martinersej.generator.Generator
 depend:
@@ -9,6 +9,13 @@ softdepend:
   - PlaceholderAPI
 commands:
   generator:
+    description: Generator command
+    usage: /<command>
+    permission: generator.command
   genlist:
+    description: Generator list command
+    usage: /<command>
   discord:
+    description: Discord command
+    usage: /<command>
 database: true
