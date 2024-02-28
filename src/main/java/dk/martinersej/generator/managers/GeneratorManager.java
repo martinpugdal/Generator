@@ -2,8 +2,8 @@ package dk.martinersej.generator.managers;
 
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
-import dk.martinersej.generator.generator.GeneratorType;
-import dk.martinersej.generator.generator.GeneratorUser;
+import dk.martinersej.generator.generator.block.GeneratorType;
+import dk.martinersej.generator.generator.User;
 import dk.martinersej.generator.generator.block.GeneratorBlock;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import org.bukkit.Bukkit;
@@ -26,7 +26,7 @@ public class GeneratorManager {
         final int[] updateDropsCounter = {0};
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             Set<GeneratorBlock> generatorBlocks = Collections.synchronizedSet(new HashSet<>());
-            for (GeneratorUser user : Generator.getUserManager().getActiveUsers()) {
+            for (User user : Generator.getInstance().getUserManager().getActiveUsers()) {
                 generatorBlocks.addAll(user.getGenerators());
             }
             for (GeneratorBlock element : generatorBlocks) {
@@ -38,13 +38,13 @@ public class GeneratorManager {
             updateDropsCounter[0]++;
             if (updateDropsCounter[0] > 25) {
                 updateDropsCounter[0] = 0;
-                Generator.getGeneratorManager().updateDrops();
+                Generator.getInstance().getGeneratorManager().updateDrops();
             }
         }, runInterval, runInterval);
     }
 
     private void updateDrops() {
-        Generator.getDBConnectionManager().connect(
+        Generator.getInstance().getDBConnectionManager().connect(
                 connection -> {
                     try {
                         connection.createStatement().executeUpdate("DELETE FROM generator_chest_drop;");
@@ -70,7 +70,7 @@ public class GeneratorManager {
     }
 
     public void loadAll(JavaPlugin plugin) {
-        Generator.getDBConnectionManager().connect(
+        Generator.getInstance().getDBConnectionManager().connect(
                 connection -> {
                     try {
                         PreparedStatement stmt = connection.prepareStatement(
@@ -110,11 +110,11 @@ public class GeneratorManager {
                                 int tier = resultSet.getInt("block_tier");
                                 GeneratorBlock generatorBlock = new GeneratorBlock(location, owner, GeneratorType.getGeneratorType(tier));
                                 generatorBlock.setID(id);
-                                Generator.getUserManager().getUser(owner).addGeneratorBlock(generatorBlock);
+                                Generator.getInstance().getUserManager().getUser(owner).addGeneratorBlock(generatorBlock);
                             } else if (type.equalsIgnoreCase("generator_chest")) {
                                 GeneratorChest generatorChest = new GeneratorChest(location, owner);
                                 generatorChest.setID(id);
-                                Generator.getUserManager().getUser(owner).setGeneratorChest(generatorChest);
+                                Generator.getInstance().getUserManager().getUser(owner).setGeneratorChest(generatorChest);
                             }
                         }
                         PreparedStatement preparedStatement = connection.prepareStatement("SELECT chest_id, tier, amount FROM generator_chest_drop");
@@ -147,7 +147,7 @@ public class GeneratorManager {
 
 
     public void saveElement(GeneratorElement element) {
-        Generator.getDBConnectionManager().connect((connection) -> {
+        Generator.getInstance().getDBConnectionManager().connect((connection) -> {
             try {
                 PreparedStatement stmt = connection.prepareStatement("INSERT INTO generator_element (owner, loc_x, loc_y, loc_z, world) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, element.getOwner().toString());
@@ -175,7 +175,7 @@ public class GeneratorManager {
     }
 
     private void deleteElements(Set<GeneratorElement> elements) {
-        Generator.getDBConnectionManager().connect(
+        Generator.getInstance().getDBConnectionManager().connect(
                 (connection -> {
                     try {
                         connection.setAutoCommit(false);
@@ -214,9 +214,9 @@ public class GeneratorManager {
     public void removeElement(GeneratorElement element) {
         deleteElements(Collections.singleton(element));
         if (element instanceof GeneratorBlock) {
-            Generator.getUserManager().getUser(element.getOwner()).removeGeneratorBlock((GeneratorBlock) element);
+            Generator.getInstance().getUserManager().getUser(element.getOwner()).removeGeneratorBlock((GeneratorBlock) element);
         } else if (element instanceof GeneratorChest) {
-            Generator.getUserManager().getUser(element.getOwner()).setGeneratorChest(null);
+            Generator.getInstance().getUserManager().getUser(element.getOwner()).setGeneratorChest(null);
             activeChest.remove((GeneratorChest) element);
         }
     }
@@ -229,7 +229,7 @@ public class GeneratorManager {
     }
 
     public GeneratorElement getElement(Location location) {
-        for (GeneratorUser user : Generator.getUserManager().getUsers().values()) {
+        for (User user : Generator.getInstance().getUserManager().getUsers().values()) {
             if (user.getGeneratorChest() != null && user.getGeneratorChest().getLocation().equals(location)) {
                 return user.getGeneratorChest();
             }
@@ -246,7 +246,7 @@ public class GeneratorManager {
         com.intellectualcrafters.plot.object.Location min = plotCorners[0];
         com.intellectualcrafters.plot.object.Location max = plotCorners[1];
         Set<GeneratorElement> elements = new HashSet<>();
-        for (GeneratorUser user : Generator.getUserManager().getUsers().values()) {
+        for (User user : Generator.getInstance().getUserManager().getUsers().values()) {
             for (GeneratorBlock element : user.getGenerators()) {
                 Location location = element.getLocation();
                 if (location.getBlockX() >= min.getX() && location.getBlockX() <= max.getX() && location.getBlockZ() >= min.getZ() && location.getBlockZ() <= max.getZ()) {
@@ -264,7 +264,7 @@ public class GeneratorManager {
     }
 
     public GeneratorBlock getGenerator(Location location) {
-        for (GeneratorUser user : Generator.getUserManager().getActiveUsers()) {
+        for (User user : Generator.getInstance().getUserManager().getActiveUsers()) {
             for (GeneratorBlock element : user.getGenerators()) {
                 if (element.getLocation().equals(location)) {
                     return element;
@@ -275,7 +275,7 @@ public class GeneratorManager {
     }
 
     public GeneratorChest getCollectorChest(Location location) {
-        for (GeneratorUser user : Generator.getUserManager().getUsers().values()) {
+        for (User user : Generator.getInstance().getUserManager().getUsers().values()) {
             if (user.getGeneratorChest() != null && user.getGeneratorChest().getLocation().equals(location)) {
                 return user.getGeneratorChest();
             }
@@ -285,7 +285,7 @@ public class GeneratorManager {
 
     public void updateElement(GeneratorElement generatorElement) {
         if (generatorElement instanceof GeneratorBlock) {
-            Generator.getDBConnectionManager().connect(connection -> {
+            Generator.getInstance().getDBConnectionManager().connect(connection -> {
                 try {
                     PreparedStatement stmt = connection.prepareStatement("UPDATE generator_block SET tier = ? WHERE id = ?");
                     stmt.setInt(1, ((GeneratorBlock) generatorElement).getGeneratorType().getTier());

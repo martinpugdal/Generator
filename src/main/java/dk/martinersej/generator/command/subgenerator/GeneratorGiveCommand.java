@@ -1,7 +1,7 @@
 package dk.martinersej.generator.command.subgenerator;
 
 import dk.martinersej.generator.Generator;
-import dk.martinersej.generator.generator.GeneratorType;
+import dk.martinersej.generator.generator.block.GeneratorType;
 import dk.martinersej.generator.generator.chest.GeneratorChestItem;
 import dk.martinersej.generator.generator.chest.GeneratorChestSellStickItem;
 import dk.martinersej.generator.utils.command.CommandResult;
@@ -54,7 +54,7 @@ public class GeneratorGiveCommand extends SubCommand {
             ItemStack itemStack = new GeneratorChestSellStickItem().toItemStack();
             player.getInventory().addItem(itemStack);
         } else if (args[0].equalsIgnoreCase("slots")) {
-            Generator.getUserManager().getUser(player.getUniqueId()).addGeneratorSlots(args.length > 1 ? Integer.parseInt(args[1]) : 1);
+            Generator.getInstance().getUserManager().getUser(player.getUniqueId()).addGeneratorSlots(args.length > 1 ? Integer.parseInt(args[1]) : 1);
         } else {
             return new CommandResult(this, Result.WRONG_USAGE);
         }

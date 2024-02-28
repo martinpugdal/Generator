@@ -3,7 +3,6 @@ package dk.martinersej.generator.generator.block;
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
-import dk.martinersej.generator.generator.GeneratorType;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import dk.martinersej.generator.utils.ParticleUtils;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
@@ -22,7 +21,7 @@ public class GeneratorBlock extends GeneratorElement {
         super(owner, location);
         this.offSetLocation = location.clone().add(0, 1, 0);
         this.generatorType = generatorType;
-        Generator.getUserManager().getUser(owner).addGeneratorBlock(this);
+        Generator.getInstance().getUserManager().getUser(owner).addGeneratorBlock(this);
     }
 
     public GeneratorType getGeneratorType() {
@@ -34,7 +33,7 @@ public class GeneratorBlock extends GeneratorElement {
     }
 
     public void drop() {
-        GeneratorChest generatorChest = Generator.getUserManager().getUser(getOwner()).getGeneratorChest();
+        GeneratorChest generatorChest = Generator.getInstance().getUserManager().getUser(getOwner()).getGeneratorChest();
         if (generatorChest != null) {
             generatorChest.addDrop(generatorType);
             if (MinecraftServer.getServer().recentTps[0] > 19) {
@@ -69,7 +68,7 @@ public class GeneratorBlock extends GeneratorElement {
             Block block = getLocation().getBlock();
             block.setType(generatorType.getItemStack().getType());
             block.setData(generatorType.getItemStack().getData().getData());
-            Generator.getGeneratorManager().updateElement(this);
+            Generator.getInstance().getGeneratorManager().updateElement(this);
         }
     }
 }

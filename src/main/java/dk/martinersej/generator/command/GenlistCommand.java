@@ -1,6 +1,8 @@
 package dk.martinersej.generator.command;
 
+import dk.martinersej.generator.generator.guis.GenlistGUI;
 import dk.martinersej.generator.utils.command.Command;
+import dk.martinersej.generator.utils.gui.PaginatedGui;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,28 +19,7 @@ public class GenlistCommand extends Command implements CommandExecutor {
         if (!(commandSender instanceof Player)) {
             return false;
         }
-//        PaginatedGui genListGui = new PaginatedGui(5, "§6Generatorer");
-//        genListGui.setDefaultClickAction(event -> event.setCancelled(true));
-//
-//        ItemStack itemStack = new ItemBuilder(Material.ARROW).toItemStack();
-//
-//        genListGui.getFiller().fillBorder(new GuiItem(itemStack));
-//
-//        for (GeneratorType generatorType : GeneratorType.values()) {
-//            genListGui.addItem(new GuiItem(generatorType.getItemStack()));
-//        }
-//
-//        GuiItem backItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("Forrige side").toItemStack(), event -> {
-//            genListGui.previous();
-//        });
-//        genListGui.setItem(3, 1, backItem);
-//
-//        GuiItem nextPageItem = new GuiItem(new ItemBuilder(Material.ARROW).setName("Næste side").toItemStack(), event -> {
-//            genListGui.next();
-//        });
-//        genListGui.setItem(3, 9, nextPageItem);
-//
-//        genListGui.open((Player) commandSender);
+        new GenlistGUI().open((Player) commandSender);
         return true;
     }
 

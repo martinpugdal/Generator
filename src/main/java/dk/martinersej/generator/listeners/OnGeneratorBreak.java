@@ -2,7 +2,7 @@ package dk.martinersej.generator.listeners;
 
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
-import dk.martinersej.generator.generator.GeneratorType;
+import dk.martinersej.generator.generator.block.GeneratorType;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,7 +30,7 @@ public class OnGeneratorBreak implements Listener {
         Block block = event.getClickedBlock();
         Location location = block.getLocation();
 
-        GeneratorElement element = Generator.getGeneratorManager().getElement(location);
+        GeneratorElement element = Generator.getInstance().getGeneratorManager().getElement(location);
         if (element == null) {
             return;
         }
@@ -73,6 +73,6 @@ public class OnGeneratorBreak implements Listener {
         if (!leftOvers.isEmpty()) {
             location.getWorld().dropItemNaturally(location, element.createItem().toItemStack());
         }
-        Generator.getGeneratorManager().removeElement(element);
+        Generator.getInstance().getGeneratorManager().removeElement(element);
     }
 }

@@ -1,7 +1,7 @@
 package dk.martinersej.generator.utils;
 
 import dk.martinersej.generator.generator.GeneratorItem;
-import dk.martinersej.generator.generator.GeneratorType;
+import dk.martinersej.generator.generator.block.GeneratorType;
 import dk.martinersej.generator.generator.block.GeneratorBlockItem;
 import dk.martinersej.generator.generator.chest.GeneratorChestItem;
 import dk.martinersej.generator.generator.chest.GeneratorChestSellStickItem;

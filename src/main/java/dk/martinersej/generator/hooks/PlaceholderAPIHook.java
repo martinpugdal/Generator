@@ -1,7 +1,7 @@
 package dk.martinersej.generator.hooks;
 
 import dk.martinersej.generator.Generator;
-import dk.martinersej.generator.generator.GeneratorUser;
+import dk.martinersej.generator.generator.User;
 import dk.martinersej.generator.utils.StringUtils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -45,28 +45,28 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         if (player == null) {
             return "";
         }
-        GeneratorUser generatorUser = Generator.getUserManager().getUser(player.getUniqueId());
+        User user = Generator.getInstance().getUserManager().getUser(player.getUniqueId());
         if (text.equalsIgnoreCase("generator_slots")) {
-            return String.valueOf(generatorUser.getGeneratorSlots());
+            return String.valueOf(user.getGeneratorSlots());
         } else if (text.equalsIgnoreCase("generator_amount")) {
-            return String.valueOf(generatorUser.getGenerators().size());
+            return String.valueOf(user.getGenerators().size());
         } else if (text.equalsIgnoreCase("has_chestcollector")) {
-            return String.valueOf(generatorUser.getGeneratorChest() != null);
+            return String.valueOf(user.getGeneratorChest() != null);
         } else if (text.equalsIgnoreCase("xp")) {
-            return String.valueOf(generatorUser.getXp());
+            return String.valueOf(user.getXp());
         } else if (text.equalsIgnoreCase("xp_formatted")) {
-            return StringUtils.formatNumber(generatorUser.getXp());
+            return StringUtils.formatNumber(user.getXp());
         } else if (text.equalsIgnoreCase("multiplier")) {
-            return String.valueOf(generatorUser.getMultiplier());
+            return String.valueOf(user.getMultiplier());
         } else if (text.equalsIgnoreCase("dyesprsec")) {
             double dropRatePrMinute = (double) 60 / Generator.GENERATOR_DROP_RATE;
             double dropRatePrSec = dropRatePrMinute / 60;
-            double dropRate = dropRatePrSec * generatorUser.getGenerators().size();
+            double dropRate = dropRatePrSec * user.getGenerators().size();
             dropRate = Math.floor(dropRate * 100.0) / 100.0;
             return String.valueOf(dropRate);
         } else if (text.equalsIgnoreCase("dyesprmin")) {
             double dropRatePrMinute = (double) 60 / Generator.GENERATOR_DROP_RATE;
-            double dropRate = dropRatePrMinute * generatorUser.getGenerators().size();
+            double dropRate = dropRatePrMinute * user.getGenerators().size();
             dropRate = Math.floor(dropRate * 100.0) / 100.0;
             return String.valueOf(dropRate);
         }

@@ -3,7 +3,7 @@ package dk.martinersej.generator.generator.chest;
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
-import dk.martinersej.generator.generator.GeneratorType;
+import dk.martinersej.generator.generator.block.GeneratorType;
 import dk.martinersej.generator.hooks.VaultHook;
 import dk.martinersej.generator.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -18,7 +18,7 @@ public class GeneratorChest extends GeneratorElement {
 
     public GeneratorChest(Location location, UUID owner) {
         super(owner, location);
-        Generator.getUserManager().getUser(owner).setGeneratorChest(this);
+        Generator.getInstance().getUserManager().getUser(owner).setGeneratorChest(this);
         gui = new GeneratorChestGUI("§aGenerator Chest" + " §7- §e" + Bukkit.getOfflinePlayer(owner).getName(), 5, this);
         gui.build();
     }
@@ -59,11 +59,11 @@ public class GeneratorChest extends GeneratorElement {
 
     public void sell(UUID uuid, GeneratorType generatorType, long amount) {
         double total = sell(generatorType, amount);
-        double multiplier = Generator.getUserManager().getUser(uuid).getMultiplier();
+        double multiplier = Generator.getInstance().getUserManager().getUser(uuid).getMultiplier();
         total = total * multiplier;
         Player playerSold = Bukkit.getPlayer(uuid);
         VaultHook.addBalance(playerSold, total);
-        Generator.getUserManager().getUser(uuid).addXp(GeneratorType.DropPrice.valueOf(generatorType.name()).getXp() * amount);
+        Generator.getInstance().getUserManager().getUser(uuid).addXp(GeneratorType.DropPrice.valueOf(generatorType.name()).getXp() * amount);
         Player ownerOfChest = Bukkit.getPlayer(getOwner());
         if (ownerOfChest != playerSold) {
             ownerOfChest.sendMessage("§e" + playerSold.getName() + " §asolgte for §e" + StringUtils.formatNumber(total) + " §amed en multiplier på §e" + multiplier + " §a!");
@@ -74,7 +74,7 @@ public class GeneratorChest extends GeneratorElement {
     public void sellAll(UUID uuid) {
         double sellTotal = 0;
         double xpTotal = 0;
-        double multiplier = Generator.getUserManager().getUser(uuid).getMultiplier();
+        double multiplier = Generator.getInstance().getUserManager().getUser(uuid).getMultiplier();
         Set<Map.Entry<GeneratorType, Integer>> drops = new HashSet<>(this.drops.entrySet());
 
         for (Map.Entry<GeneratorType, Integer> drop : drops) {
@@ -85,7 +85,7 @@ public class GeneratorChest extends GeneratorElement {
         Player playerSold = Bukkit.getPlayer(uuid);
         Player ownerOfChest = Bukkit.getPlayer(getOwner());
         VaultHook.addBalance(playerSold, sellTotal * multiplier);
-        Generator.getUserManager().getUser(uuid).addXp(xpTotal);
+        Generator.getInstance().getUserManager().getUser(uuid).addXp(xpTotal);
         if (ownerOfChest != playerSold && ownerOfChest != null) {
             ownerOfChest.sendMessage("§e" + playerSold.getName() + " §asolgte alle drops fra din generator chest!");
         }

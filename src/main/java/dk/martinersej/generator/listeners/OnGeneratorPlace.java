@@ -3,10 +3,9 @@ package dk.martinersej.generator.listeners;
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
-import dk.martinersej.generator.generator.GeneratorUser;
+import dk.martinersej.generator.generator.User;
 import dk.martinersej.generator.generator.block.GeneratorBlockItem;
 import dk.martinersej.generator.generator.chest.GeneratorChestItem;
-import dk.martinersej.generator.hooks.PlotHook;
 import dk.martinersej.generator.utils.GeneratorUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,13 +38,13 @@ public class OnGeneratorPlace implements Listener {
         }
 
         if (generatorItem instanceof GeneratorChestItem) {
-            if (Generator.getUserManager().getUser(player.getUniqueId()).getGeneratorChest() != null) {
+            if (Generator.getInstance().getUserManager().getUser(player.getUniqueId()).getGeneratorChest() != null) {
                 player.sendMessage("§c§oDu har allerede en generator chest");
                 event.setCancelled(true);
                 return;
             }
         } else if (generatorItem instanceof GeneratorBlockItem) {
-            GeneratorUser user = Generator.getUserManager().getUser(player.getUniqueId());
+            User user = Generator.getInstance().getUserManager().getUser(player.getUniqueId());
             if (user.getGenerators().size() >= user.getGeneratorSlots()) {
                 player.sendMessage("§c§oDu kan ikke placere flere generatorer");
                 event.setCancelled(true);
@@ -56,6 +55,6 @@ public class OnGeneratorPlace implements Listener {
         if (element == null) {
             return;
         }
-        Generator.getGeneratorManager().addElement(element);
+        Generator.getInstance().getGeneratorManager().addElement(element);
     }
 }

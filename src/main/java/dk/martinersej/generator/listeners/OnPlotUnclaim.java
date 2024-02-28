@@ -17,8 +17,8 @@ public class OnPlotUnclaim implements Listener {
     public void onPlotUnclaim(PlotDeleteEvent event) {
         Set<GeneratorElement> elements = new HashSet<>();
         for (Plot plot : event.getPlot().getConnectedPlots()) {
-            elements.addAll(Generator.getGeneratorManager().getElementsBetweenXandZ(plot.getCorners().clone()));
+            elements.addAll(Generator.getInstance().getGeneratorManager().getElementsBetweenXandZ(plot.getCorners().clone()));
         }
-        Generator.getGeneratorManager().removeAll(elements);
+        Generator.getInstance().getGeneratorManager().removeAll(elements);
     }
 }

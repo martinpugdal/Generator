@@ -7,6 +7,7 @@ import dk.martinersej.generator.hooks.PlaceholderAPIHook;
 import dk.martinersej.generator.listeners.*;
 import dk.martinersej.generator.managers.DatabaseManager;
 import dk.martinersej.generator.managers.GeneratorManager;
+import dk.martinersej.generator.managers.TeamManager;
 import dk.martinersej.generator.managers.UserManager;
 import dk.martinersej.generator.utils.gui.OnGuiClick;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,12 +18,13 @@ public final class Generator extends JavaPlugin {
 
     public static final long GENERATOR_DROP_RATE = 20 * 8; // 8 seconds
     private static Generator instance;
-    private static DatabaseManager databaseManager;
-    private static GeneratorManager generatorManager;
-    private static UserManager userManager;
+    private DatabaseManager databaseManager;
+    private GeneratorManager generatorManager;
+    private UserManager userManager;
+    private TeamManager teamManager;
 
 
-    public static DatabaseManager getDBConnectionManager() {
+    public DatabaseManager getDBConnectionManager() {
         return databaseManager;
     }
 
@@ -33,11 +35,11 @@ public final class Generator extends JavaPlugin {
         return instance;
     }
 
-    public static GeneratorManager getGeneratorManager() {
+    public GeneratorManager getGeneratorManager() {
         return generatorManager;
     }
 
-    public static UserManager getUserManager() {
+    public UserManager getUserManager() {
         return userManager;
     }
 
@@ -56,6 +58,7 @@ public final class Generator extends JavaPlugin {
         databaseManager = new DatabaseManager(this);
         generatorManager = new GeneratorManager(this, GENERATOR_DROP_RATE);
         userManager = new UserManager(this, 20 * 60 * 5); // 15 minutes
+        teamManager = new TeamManager(this, 20 * 60 * 5); // 15 minutes
 
         databaseManager.createTables(this,
                 () -> userManager.loadAll(this, () -> generatorManager.loadAll(this))

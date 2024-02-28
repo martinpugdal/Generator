@@ -1,4 +1,4 @@
-package dk.martinersej.generator.generator;
+package dk.martinersej.generator.generator.block;
 
 import dk.martinersej.generator.utils.ItemBuilder;
 import dk.martinersej.generator.utils.StringUtils;

@@ -2,13 +2,15 @@ package dk.martinersej.generator.generator;
 
 import dk.martinersej.generator.generator.block.GeneratorBlock;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class GeneratorUser {
+public class User {
 
     private final UUID uuid;
     private final Set<GeneratorBlock> generatorBlocks = Collections.synchronizedSet(new HashSet<>());
@@ -17,15 +19,19 @@ public class GeneratorUser {
     private double xp = 0;
     private GeneratorChest generatorChest;
 
-    public GeneratorUser(UUID uuid) {
+    public User(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public GeneratorUser(UUID uuid, double multiplier, double xp, long generatorSlots) {
+    public User(UUID uuid, double multiplier, double xp, long generatorSlots) {
         this(uuid);
         this.multiplier = multiplier;
         this.xp = xp;
         this.generatorSlots = generatorSlots;
+    }
+
+    public OfflinePlayer getPlayer() {
+        return Bukkit.getOfflinePlayer(uuid);
     }
 
     public void addGeneratorBlock(GeneratorBlock generatorBlock) {

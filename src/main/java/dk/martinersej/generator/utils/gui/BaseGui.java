@@ -138,6 +138,17 @@ public abstract class BaseGui implements InventoryHolder {
         }
     }
 
+    public void setBorder(ItemStack item) {
+        for (int i = 0; i < 9; i++) {
+            setItem(i, item);
+            setItem((rows - 1) * 9 + i, item);
+        }
+        for (int i = 0; i < rows; i++) {
+            setItem(i * 9, item);
+            setItem(i * 9 + 8, item);
+        }
+    }
+
     public void setCooldown(double cooldownInSeconds) {
         this.cooldown = cooldownInSeconds;
     }

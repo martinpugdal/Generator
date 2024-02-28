@@ -1,7 +1,7 @@
 package dk.martinersej.generator.listeners;
 
 import dk.martinersej.generator.Generator;
-import dk.martinersej.generator.generator.GeneratorType;
+import dk.martinersej.generator.generator.block.GeneratorType;
 import dk.martinersej.generator.generator.block.GeneratorBlock;
 import dk.martinersej.generator.hooks.VaultHook;
 import dk.martinersej.generator.utils.GeneratorUtils;
@@ -32,7 +32,7 @@ public class OnGeneratorUpgrade implements Listener {
         } catch (Exception ignored) {
         }
 
-        GeneratorBlock element = Generator.getGeneratorManager().getGenerator(event.getClickedBlock().getLocation());
+        GeneratorBlock element = Generator.getInstance().getGeneratorManager().getGenerator(event.getClickedBlock().getLocation());
 
         if (element == null) {
             return;

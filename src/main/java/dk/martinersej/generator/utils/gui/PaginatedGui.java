@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class PaginatedGui extends BaseGui {
+public abstract class PaginatedGui extends BaseGui {
 
     // List with all the page items
     private final List<ItemStack> pageItems = new ArrayList<>();
@@ -130,6 +130,8 @@ public class PaginatedGui extends BaseGui {
         for (HumanEntity viewer : new ArrayList<>(getInventory().getViewers())) ((Player) viewer).updateInventory();
     }
 
+    public abstract void onInventoryClick(InventoryClickEvent event);
+
     private void updatePage() {
         currentPage.clear();
         int start = (pageNum - 1) * pageSize;
@@ -177,9 +179,5 @@ public class PaginatedGui extends BaseGui {
         }
 
         return counter;
-    }
-
-    public void onInventoryClick(InventoryClickEvent event) {
-        //ignore this because we are using the BaseGui's onInventoryClick method for all the logic
     }
 }

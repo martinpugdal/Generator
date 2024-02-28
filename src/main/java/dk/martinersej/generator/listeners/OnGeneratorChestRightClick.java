@@ -23,7 +23,7 @@ public class OnGeneratorChestRightClick implements Listener {
         Block block = event.getClickedBlock();
         Location location = block.getLocation();
 
-        GeneratorChest element = Generator.getGeneratorManager().getCollectorChest(location);
+        GeneratorChest element = Generator.getInstance().getGeneratorManager().getCollectorChest(location);
         if (element == null) {
             return;
         }

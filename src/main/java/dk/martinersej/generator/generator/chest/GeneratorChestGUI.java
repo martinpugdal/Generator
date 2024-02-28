@@ -1,6 +1,6 @@
 package dk.martinersej.generator.generator.chest;
 
-import dk.martinersej.generator.generator.GeneratorType;
+import dk.martinersej.generator.generator.block.GeneratorType;
 import dk.martinersej.generator.utils.GeneratorUtils;
 import dk.martinersej.generator.utils.ItemBuilder;
 import dk.martinersej.generator.utils.StringUtils;
