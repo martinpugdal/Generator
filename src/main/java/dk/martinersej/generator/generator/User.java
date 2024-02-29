@@ -18,7 +18,7 @@ public class User {
     private long generatorSlots = 25;
     private double multiplier = 1;
     private double xp = 0;
-    private GeneratorChest tttgeneratorChest;
+    private GeneratorChest generatorChest;
     private TeamUser teamUser;
 
     public User(UUID uuid) {
