@@ -2,6 +2,7 @@ package dk.martinersej.generator;
 
 import dk.martinersej.generator.command.GeneratorCommand;
 import dk.martinersej.generator.command.GenlistCommand;
+import dk.martinersej.generator.command.TeamCommand;
 import dk.martinersej.generator.command.singlecommands.DiscordCommand;
 import dk.martinersej.generator.hooks.PlaceholderAPIHook;
 import dk.martinersej.generator.listeners.*;
@@ -43,6 +44,10 @@ public final class Generator extends JavaPlugin {
         return userManager;
     }
 
+    public TeamManager getTeamManager() {
+        return teamManager;
+    }
+
     @Override
     public void onLoad() {
         instance = this;
@@ -61,7 +66,10 @@ public final class Generator extends JavaPlugin {
         teamManager = new TeamManager(this, 20 * 60 * 5); // 15 minutes
 
         databaseManager.createTables(this,
-                () -> userManager.loadAll(this, () -> generatorManager.loadAll(this))
+                () -> userManager.loadAll(() ->  {
+                    generatorManager.loadAll();
+                    teamManager.loadAll();
+                })
         );
 
         registerListeners();
@@ -71,7 +79,7 @@ public final class Generator extends JavaPlugin {
     }
 
     private void runHooks() {
-        new PlaceholderAPIHook(this);
+        new PlaceholderAPIHook();
     }
 
     private void registerListeners() {
@@ -93,10 +101,14 @@ public final class Generator extends JavaPlugin {
 
         this.getCommand("generator").setExecutor(new GeneratorCommand(this));
         this.getCommand("genlist").setExecutor(new GenlistCommand(this));
+
+        this.getCommand("team").setExecutor(new TeamCommand(this));
     }
 
     @Override
     public void onDisable() {
+        userManager.saveAllSync();
+        teamManager.saveAllSync();
         try {
             databaseManager.close();
         } catch (SQLException ignored) {

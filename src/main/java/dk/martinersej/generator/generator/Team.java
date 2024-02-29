@@ -1,5 +1,7 @@
 package dk.martinersej.generator.generator;
 
+import dk.martinersej.generator.generator.block.GeneratorBlock;
+import dk.martinersej.generator.generator.chest.GeneratorChest;
 import dk.martinersej.generator.generator.team.TeamRole;
 import dk.martinersej.generator.generator.team.TeamUser;
 
@@ -14,18 +16,30 @@ public class Team {
     public Team(String teamName, TeamUser user) {
         this.name = teamName;
         this.users.add(user);
-    }
-
-    private void addToSaveQueue() {
-
+        user.setTeam(this);
     }
 
     public void addUser(User user) {
-        this.users.add(new TeamUser(this, user, TeamRole.MEMBER));
+        TeamUser teamUser = new TeamUser(user, TeamRole.MEMBER);
+        teamUser.setTeam(this);
+        this.users.add(teamUser);
+    }
+
+    public void addTeamUser(TeamUser teamUser) {
+        this.users.add(teamUser);
+        teamUser.setTeam(this);
+    }
+
+    public void addUser(User user, TeamRole role) {
+        TeamUser teamUser = new TeamUser(user, role);
+        teamUser.setTeam(this);
+        this.users.add(teamUser);
     }
 
     public void removeUser(TeamUser teamUser) {
         this.users.remove(teamUser);
+        teamUser.setTeam(null);
+        teamUser.setRole(null);
     }
 
     public boolean containsTeamUser(TeamUser teamUser) {
@@ -65,5 +79,27 @@ public class Team {
             }
         }
         return null;
+    }
+
+    public List<GeneratorBlock> getGeneratorsInTeam() {
+        List<GeneratorBlock> generators = new ArrayList<>();
+        for (TeamUser teamUser : this.users) {
+            generators.addAll(teamUser.getUser().getGenerators());
+        }
+        return generators;
+    }
+
+    public List<GeneratorChest> getChestsInTeam() {
+        List<GeneratorChest> chests = new ArrayList<>();
+        for (TeamUser teamUser : this.users) {
+            if (teamUser.getUser().getGeneratorChest() == null) continue;
+            chests.add(teamUser.getUser().getGeneratorChest());
+        }
+        return chests;
+    }
+
+    public void delete() {
+        getUsers().forEach(teamUser -> teamUser.getUser().setTeamUser(null));
+        getUsers().clear();
     }
 }

@@ -4,17 +4,15 @@ import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.User;
 import dk.martinersej.generator.utils.StringUtils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
-    private final JavaPlugin plugin;
-
-    public PlaceholderAPIHook(JavaPlugin plugin) {
-        this.plugin = plugin;
-        if (plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+    public PlaceholderAPIHook() {
+        if (Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             register();
         }
     }

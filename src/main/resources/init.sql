@@ -1,6 +1,21 @@
 PRAGMA FOREIGN_KEYS = ON;
 PRAGMA AUTO_VACUUM = FULL;
 
+CREATE TABLE IF NOT EXISTS team
+(
+    name VARCHAR(16) PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS team_user
+(
+    team_name VARCHAR(16) NOT NULL,
+    user_uuid VARCHAR(36) NOT NULL,
+    team_role VARCHAR(32) NOT NULL DEFAULT 'MEMBER' CHECK ( team_role IN ('LEADER', 'CO_LEADER', 'ELDER', 'MEMBER') ),
+    PRIMARY KEY (team_name, user_uuid),
+    FOREIGN KEY (team_name) REFERENCES team (name) ON DELETE CASCADE,
+    FOREIGN KEY (user_uuid) REFERENCES user (uuid) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS user
 (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,3 +62,4 @@ CREATE TABLE IF NOT EXISTS generator_chest_drop
 CREATE INDEX IF NOT EXISTS idx_user ON user (uuid, xp, multiplier, generator_slots);
 CREATE INDEX IF NOT EXISTS idx_generator_loc ON generator_element (loc_x, loc_y, loc_z, world);
 CREATE INDEX IF NOT EXISTS idx_chest_drop ON generator_chest_drop (chest_id, tier, amount);
+CREATE INDEX IF NOT EXISTS idx_team_user ON team_user (team_name, user_uuid, team_role);

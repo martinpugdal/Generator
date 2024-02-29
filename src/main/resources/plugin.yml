@@ -2,6 +2,7 @@ name: Generator
 authors: [ MartinErSej ]
 version: '${project.version}'
 main: dk.martinersej.generator.Generator
+database: true
 depend:
   - PlotSquared
   - Vault
@@ -18,4 +19,6 @@ commands:
   discord:
     description: Discord command
     usage: /<command>
-database: true
+  team:
+    description: Team command
+    usage: /<command>

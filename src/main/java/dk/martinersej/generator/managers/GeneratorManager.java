@@ -69,7 +69,7 @@ public class GeneratorManager {
         );
     }
 
-    public void loadAll(JavaPlugin plugin) {
+    public void loadAll() {
         Generator.getInstance().getDBConnectionManager().connect(
                 connection -> {
                     try {
@@ -128,7 +128,7 @@ public class GeneratorManager {
                                 chest.addDrop(GeneratorType.getGeneratorType(tier), amount);
                             }
                         }
-                        System.out.println(plugin.getName() + " Loaded " + count + " generator elements");
+                        System.out.println(Bukkit.getName() + " Loaded " + count + " generator elements");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

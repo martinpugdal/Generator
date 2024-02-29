@@ -75,4 +75,14 @@ public class DatabaseManager {
         });
         return future;
     }
+
+    // sync save to db
+    public void sync(Consumer<Connection> callback) {
+        lock.lock();
+        try {
+            callback.accept(connection);
+        } finally {
+            lock.unlock();
+        }
+    }
 }

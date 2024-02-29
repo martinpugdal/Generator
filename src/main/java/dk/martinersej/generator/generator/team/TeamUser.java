@@ -5,14 +5,18 @@ import dk.martinersej.generator.generator.User;
 
 public class TeamUser {
 
-    private final Team team;
+    private Team team;
     private final User user;
-    private final TeamRole role;
+    private TeamRole role;
 
-    public TeamUser(Team team, User user, TeamRole role) {
-        this.team = team;
+    public TeamUser(User user, TeamRole role) {
+        user.setTeamUser(this);
         this.user = user;
         this.role = role;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public Team getTeam() {
@@ -25,5 +29,9 @@ public class TeamUser {
 
     public TeamRole getRole() {
         return this.role;
+    }
+
+    public void setRole(TeamRole role) {
+        this.role = role;
     }
 }

@@ -3,6 +3,7 @@ package dk.martinersej.generator.managers;
 import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.User;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.PreparedStatement;
@@ -21,11 +22,11 @@ public class UserManager {
 
     public UserManager(JavaPlugin plugin, long saveInterval) {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            saveUsers(usersToSave);
+            saveUsers();
         }, saveInterval, saveInterval);
     }
 
-    public void loadAll(JavaPlugin plugin, Runnable callback) {
+    public void loadAll(Runnable callback) {
         Generator.getInstance().getDBConnectionManager().connect(connection -> {
             try {
                 PreparedStatement stmt = connection.prepareStatement("SELECT uuid, xp, multiplier, generator_slots FROM user;");
@@ -40,7 +41,7 @@ public class UserManager {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(plugin.getName() + " Loaded " + users.size() + " users");
+            System.out.println(Bukkit.getName() + " Loaded " + users.size() + " users");
             callback.run();
         });
 
@@ -48,6 +49,10 @@ public class UserManager {
 
     public User getUser(UUID owner) {
         return users.get(owner);
+    }
+
+    public User getUser(OfflinePlayer player) {
+        return getUser(player.getUniqueId());
     }
 
     public void addActiveUser(User user) {
@@ -108,8 +113,8 @@ public class UserManager {
         });
     }
 
-    public void saveUsers(Set<User> users) {
-        Set<User> users1 = new HashSet<>(users);
+    public void saveUsers() {
+        Set<User> users1 = new HashSet<>(usersToSave);
         users1.addAll(activeUsers);
         Generator.getInstance().getDBConnectionManager().connect(
                 (connection -> {
@@ -149,6 +154,51 @@ public class UserManager {
                     }
                 })
         );
+        usersToSave.clear();
+    }
+
+    public void saveAllSync() {
+        Set<User> users1 = new HashSet<>(usersToSave);
+        users1.addAll(activeUsers);
+        Generator.getInstance().getDBConnectionManager().sync(
+            (connection -> {
+                try {
+                    connection.setAutoCommit(false);
+                    PreparedStatement stmt = connection.prepareStatement(
+                        "UPDATE user "+
+                            "SET "+
+                            "xp = ?, " +
+                            "multiplier = ?, " +
+                            "generator_slots = ? " +
+                            "WHERE " +
+                            "uuid = ?"
+                    );
+                    for (User user : users1) {
+                        stmt.setDouble(1, user.getXp());
+                        stmt.setDouble(2, user.getMultiplier());
+                        stmt.setLong(3, user.getGeneratorSlots());
+                        stmt.setString(4, user.getUUID().toString());
+                        stmt.addBatch();
+                    }
+                    stmt.executeBatch();
+                    connection.commit();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    try {
+                        connection.rollback();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                } finally {
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
+        usersToSave.clear();
     }
 
     public HashMap<UUID, User> getUsers() {

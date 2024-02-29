@@ -2,6 +2,7 @@ package dk.martinersej.generator.generator;
 
 import dk.martinersej.generator.generator.block.GeneratorBlock;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
+import dk.martinersej.generator.generator.team.TeamUser;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -17,7 +18,8 @@ public class User {
     private long generatorSlots = 25;
     private double multiplier = 1;
     private double xp = 0;
-    private GeneratorChest generatorChest;
+    private GeneratorChest tttgeneratorChest;
+    private TeamUser teamUser;
 
     public User(UUID uuid) {
         this.uuid = uuid;
@@ -100,5 +102,20 @@ public class User {
 
     public void setGeneratorSlots(long generatorSlots) {
         this.generatorSlots = generatorSlots;
+    }
+
+    public Team getTeam() {
+        if (teamUser == null)
+            return null;
+        else
+            return teamUser.getTeam();
+    }
+
+    public TeamUser getTeamUser() {
+        return teamUser;
+    }
+
+    public void setTeamUser(TeamUser teamUser) {
+        this.teamUser = teamUser;
     }
 }
