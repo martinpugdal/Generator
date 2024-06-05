@@ -63,6 +63,7 @@ public class CategoryShopGUI extends PaginatedGui {
     }
 
     private Shop.ShopItem getShopItem(int slot) {
+        //TODO: fix this, if u trying to buy from next rows, because border is counted here
         return shopCategori.getShop().getShopItems()[slot + (getPageNum() - 1) * getPageSize()];
     }
 

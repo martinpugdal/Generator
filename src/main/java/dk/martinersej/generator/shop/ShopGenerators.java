@@ -5,7 +5,7 @@ import dk.martinersej.generator.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopGenerators implements Shop {
@@ -13,12 +13,15 @@ public class ShopGenerators implements Shop {
     private final ShopItem[] shopItems;
 
     ShopGenerators() {
-        List<GeneratorType> generatorTypes = Arrays.asList(GeneratorType.values());
-        generatorTypes.removeIf(generatorType -> !generatorType.isUpgradeAble());
-        shopItems = new ShopItem[generatorTypes.size()];
-
+        List<GeneratorType> generatorTypesList = new ArrayList<>();
+        for (GeneratorType generatorType : GeneratorType.values()) {
+            if (generatorType.isUpgradeAble()) {
+                generatorTypesList.add(generatorType);
+            }
+        }
+        shopItems = new ShopItem[generatorTypesList.size()];
         for (int i = 0; i < shopItems.length; i++) {
-            GeneratorType generatorType = generatorTypes.get(i);
+            GeneratorType generatorType = generatorTypesList.get(i);
             shopItems[i] = new ShopItem() {
                 @Override
                 public String getName() {
