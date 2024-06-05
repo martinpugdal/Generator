@@ -89,8 +89,8 @@ public class CategoryShopGUI extends PaginatedGui {
             Shop.ShopItem shopItem = getShopItem(event.getSlot() - startSlot);
 
             Player player = (Player) event.getWhoClicked();
-            // buy
             if (event.isRightClick()) {
+                //TODO: add shopItem.isBuyable() to check if item is buyable
                 if (player.getInventory().firstEmpty() == -1) {
                     player.sendMessage("Your inventory is full");
                 } else if (VaultHook.getEconomy().getBalance(player) < shopItem.getBuyPrice()) {
@@ -101,7 +101,7 @@ public class CategoryShopGUI extends PaginatedGui {
                     player.sendMessage("You bought " + shopItem.getName() + " for " + shopItem.getBuyPrice());
                 }
             } else if (event.isLeftClick()) {
-                // sell
+                //TODO: add shopItem.isSellable() to check if item is sellable
                 if (player.getInventory().containsAtLeast(shopItem.getItemStack(), shopItem.getAmount())) {
                     player.getInventory().removeItem(shopItem.getItemStack());
                     VaultHook.getEconomy().depositPlayer(player, shopItem.getSellPrice());

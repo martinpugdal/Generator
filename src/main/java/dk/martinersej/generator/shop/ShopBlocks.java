@@ -2,7 +2,6 @@ package dk.martinersej.generator.shop;
 
 import dk.martinersej.generator.utils.ItemBuilder;
 import dk.martinersej.generator.utils.StringUtils;
-import javafx.scene.transform.MatrixType;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
