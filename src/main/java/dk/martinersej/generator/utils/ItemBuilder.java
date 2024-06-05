@@ -86,6 +86,16 @@ public class ItemBuilder {
     }
 
     /**
+     * Change the durability of the item.
+     *
+     * @param dur The durability to set it to.
+     */
+    public ItemBuilder setDurability(int dur) {
+        is.setDurability((short) dur);
+        return this;
+    }
+
+    /**
      * Set the amount of the item.
      *
      * @param amount The amount to change it to.

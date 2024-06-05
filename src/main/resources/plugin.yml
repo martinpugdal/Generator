@@ -22,3 +22,6 @@ commands:
   team:
     description: Team command
     usage: /<command>
+  shop:
+    description: Shop command
+    usage: /<command>

@@ -26,7 +26,7 @@ public class UserManager {
         }, saveInterval, saveInterval);
     }
 
-    public void loadAll(Runnable callback) {
+    public void loadAll() {
         Generator.getInstance().getDBConnectionManager().connect(connection -> {
             try {
                 PreparedStatement stmt = connection.prepareStatement("SELECT uuid, xp, multiplier, generator_slots FROM user;");
@@ -42,7 +42,8 @@ public class UserManager {
                 ex.printStackTrace();
             }
             System.out.println(Bukkit.getName() + " Loaded " + users.size() + " users");
-            callback.run();
+            Generator.getInstance().getGeneratorManager().loadAll();
+            Generator.getInstance().getTeamManager().loadAll();
         });
 
     }

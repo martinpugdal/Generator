@@ -11,7 +11,7 @@ public abstract class SubCommand extends dk.martinersej.generator.utils.command.
     private final String[] aliases;
 
     public SubCommand(JavaPlugin plugin, String description, String usage, String permission, String... aliases) {
-        super(plugin);
+        super(aliases[0]);
 
         this.description = description;
         this.usage = usage;
@@ -20,7 +20,7 @@ public abstract class SubCommand extends dk.martinersej.generator.utils.command.
     }
 
     public SubCommand(JavaPlugin plugin, String description, String usage, String[] permissions, String... aliases) {
-        super(plugin);
+        super(aliases[0]);
 
         this.description = description;
         this.usage = usage;

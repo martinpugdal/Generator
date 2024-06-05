@@ -4,8 +4,11 @@ import dk.martinersej.generator.generator.block.GeneratorBlock;
 import dk.martinersej.generator.generator.chest.GeneratorChest;
 import dk.martinersej.generator.generator.team.TeamRole;
 import dk.martinersej.generator.generator.team.TeamUser;
+import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Team {
@@ -99,7 +102,14 @@ public class Team {
     }
 
     public void delete() {
-        getUsers().forEach(teamUser -> teamUser.getUser().setTeamUser(null));
+        for (TeamUser teamUser : getUsers()) {
+            teamUser.getUser().setTeamUser(null);
+            teamUser.setTeam(null);
+            teamUser.setRole(null);
+            if (!teamUser.getRole().equals(TeamRole.LEADER) && teamUser.getUser().getPlayer().isOnline() && teamUser.getUser().getPlayer().getPlayer() != null) {
+                teamUser.getUser().getPlayer().getPlayer().sendMessage("Dit team er blevet slettet");
+            }
+        }
         getUsers().clear();
     }
 }

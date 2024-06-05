@@ -4,6 +4,7 @@ import dk.martinersej.generator.command.GeneratorCommand;
 import dk.martinersej.generator.command.GenlistCommand;
 import dk.martinersej.generator.command.TeamCommand;
 import dk.martinersej.generator.command.singlecommands.DiscordCommand;
+import dk.martinersej.generator.command.singlecommands.ShopCommand;
 import dk.martinersej.generator.hooks.PlaceholderAPIHook;
 import dk.martinersej.generator.listeners.*;
 import dk.martinersej.generator.managers.DatabaseManager;
@@ -24,16 +25,15 @@ public final class Generator extends JavaPlugin {
     private UserManager userManager;
     private TeamManager teamManager;
 
-
-    public DatabaseManager getDBConnectionManager() {
-        return databaseManager;
-    }
-
     public static Generator getInstance() {
         if (instance == null) {
             throw new IllegalStateException("Generator is not loaded!");
         }
         return instance;
+    }
+
+    public DatabaseManager getDBConnectionManager() {
+        return databaseManager;
     }
 
     public GeneratorManager getGeneratorManager() {
@@ -65,12 +65,9 @@ public final class Generator extends JavaPlugin {
         userManager = new UserManager(this, 20 * 60 * 5); // 15 minutes
         teamManager = new TeamManager(this, 20 * 60 * 5); // 15 minutes
 
-        databaseManager.createTables(this,
-                () -> userManager.loadAll(() ->  {
-                    generatorManager.loadAll();
-                    teamManager.loadAll();
-                })
-        );
+        databaseManager.createTables();
+
+        userManager.loadAll();
 
         registerListeners();
         registerCommands();
@@ -97,12 +94,11 @@ public final class Generator extends JavaPlugin {
     }
 
     private void registerCommands() {
-        this.getCommand("discord").setExecutor(new DiscordCommand(this));
-
-        this.getCommand("generator").setExecutor(new GeneratorCommand(this));
-        this.getCommand("genlist").setExecutor(new GenlistCommand(this));
-
-        this.getCommand("team").setExecutor(new TeamCommand(this));
+        new DiscordCommand("discord");
+        new GeneratorCommand("generator", this);
+        new GenlistCommand("genlist");
+        new TeamCommand("team", this);
+        new ShopCommand("shop");
     }
 
     @Override

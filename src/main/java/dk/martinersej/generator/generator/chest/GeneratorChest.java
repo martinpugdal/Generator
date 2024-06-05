@@ -4,6 +4,7 @@ import dk.martinersej.generator.Generator;
 import dk.martinersej.generator.generator.GeneratorElement;
 import dk.martinersej.generator.generator.GeneratorItem;
 import dk.martinersej.generator.generator.block.GeneratorType;
+import dk.martinersej.generator.guis.generator.GeneratorChestGUI;
 import dk.martinersej.generator.hooks.VaultHook;
 import dk.martinersej.generator.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -20,7 +21,6 @@ public class GeneratorChest extends GeneratorElement {
         super(owner, location);
         Generator.getInstance().getUserManager().getUser(owner).setGeneratorChest(this);
         gui = new GeneratorChestGUI("§aGenerator Chest" + " §7- §e" + Bukkit.getOfflinePlayer(owner).getName(), 5, this);
-        gui.build();
     }
 
     public GeneratorChestGUI getGui() {
@@ -51,14 +51,17 @@ public class GeneratorChest extends GeneratorElement {
         gui.open(player);
     }
 
-    private long sell(GeneratorType generatorType, long amount) {
+    /*
+     * @return the total price of the sold drops
+     */
+    private long sellValue(GeneratorType generatorType, long amount) {
         removeDrop(generatorType);
         double price = GeneratorType.DropPrice.valueOf(generatorType.name()).getPrice();
         return (long) (price * amount);
     }
 
     public void sell(UUID uuid, GeneratorType generatorType, long amount) {
-        double total = sell(generatorType, amount);
+        double total = sellValue(generatorType, amount);
         double multiplier = Generator.getInstance().getUserManager().getUser(uuid).getMultiplier();
         total = total * multiplier;
         Player playerSold = Bukkit.getPlayer(uuid);
@@ -78,7 +81,7 @@ public class GeneratorChest extends GeneratorElement {
         Set<Map.Entry<GeneratorType, Integer>> drops = new HashSet<>(this.drops.entrySet());
 
         for (Map.Entry<GeneratorType, Integer> drop : drops) {
-            sellTotal += sell(drop.getKey(), drop.getValue());
+            sellTotal += sellValue(drop.getKey(), drop.getValue());
             xpTotal += GeneratorType.DropPrice.valueOf(drop.getKey().name()).getXp() * drop.getValue();
         }
 
@@ -90,7 +93,7 @@ public class GeneratorChest extends GeneratorElement {
             ownerOfChest.sendMessage("§e" + playerSold.getName() + " §asolgte alle drops fra din generator chest!");
         }
         playerSold.sendMessage("§aDu solgte alle drops for §e" + StringUtils.formatNumber(sellTotal) + " §amed en multiplier på §e" + multiplier + " §a!");
-        gui.updateGui();
+        gui.rerender();
     }
 
     public WeakHashMap<GeneratorType, Integer> getDrops() {

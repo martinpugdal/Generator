@@ -9,36 +9,42 @@ import java.util.*;
 
 public abstract class PaginatedGui extends BaseGui {
 
-    // List with all the page items
     private final List<ItemStack> pageItems = new ArrayList<>();
-    // Saves the current page items and it's slot
     private final Map<Integer, ItemStack> currentPage;
 
     private int pageSize;
     private int pageNum = 1;
 
-    public PaginatedGui(final int rows, final int pageSize, final String title) {
+    public PaginatedGui(final String title, final int rows, final int pageSize) {
         super(title, rows);
         this.pageSize = pageSize;
         int inventorySize = rows * 9;
         this.currentPage = new LinkedHashMap<>(inventorySize);
     }
 
-    public PaginatedGui(final int rows, final String title) {
-        this(rows, 0, title);
+    public PaginatedGui(final String title, final int rows) {
+        this(title, rows, 0);
     }
 
-    public PaginatedGui(final String title) {
-        this(2, title);
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public BaseGui setPageSize(final int pageSize) {
+    public PaginatedGui setPageSize(final int pageSize) {
         this.pageSize = pageSize;
         return this;
     }
 
     public void addItem(final ItemStack itemStack) {
         pageItems.add(itemStack);
+    }
+
+    public void removeItem(final ItemStack itemStack) {
+        pageItems.remove(itemStack);
+    }
+
+    public void removeItem(final int index) {
+        pageItems.remove(index);
     }
 
     ItemStack getPageItem(final int slot) {
@@ -58,7 +64,7 @@ public abstract class PaginatedGui extends BaseGui {
     }
 
     public List<ItemStack> getPageItems() {
-        return Collections.unmodifiableList(pageItems);
+        return pageItems;
     }
 
     private List<ItemStack> getPageItems(final int givenPage) {
@@ -90,12 +96,12 @@ public abstract class PaginatedGui extends BaseGui {
     }
 
     public int getPreviousPageNum() {
-        if (pageNum - 1 < 1) return pageNum;
+        if (pageNum - 1 == 0) return pageNum;
         return pageNum - 1;
     }
 
     public boolean nextPage() {
-        if (pageNum + 1 != getTotalPagesNum()) return false;
+        if (pageNum + 1 > getTotalPagesNum()) return false;
         pageNum++;
         updatePage();
         return true;
@@ -122,9 +128,13 @@ public abstract class PaginatedGui extends BaseGui {
     @Override
     public void rerender() {
         getInventory().clear();
+        currentPage.clear();
 
         populateGui();
 
+        if (pageSize == 0) pageSize = calculatePageSize();
+
+        populatePage();
         updatePage();
 
         for (HumanEntity viewer : new ArrayList<>(getInventory().getViewers())) ((Player) viewer).updateInventory();
@@ -132,17 +142,9 @@ public abstract class PaginatedGui extends BaseGui {
 
     public abstract void onInventoryClick(InventoryClickEvent event);
 
-    private void updatePage() {
-        currentPage.clear();
-        int start = (pageNum - 1) * pageSize;
-        int end = start + pageSize;
-        if (end > pageItems.size()) {
-            end = pageItems.size();
-        }
-        for (int i = start; i < end; i++) {
-            currentPage.put(i - start, pageItems.get(i));
-        }
-        currentPage.forEach(this::setItem);
+    void updatePage() {
+        clearPage();
+        populatePage();
     }
 
     void clearPage() {
@@ -167,17 +169,16 @@ public abstract class PaginatedGui extends BaseGui {
 
     @Override
     public void open(Player player) {
-        if (pageSize == 0) pageSize = calculatePageSize();
-        super.open(player);
+        super.rerender();
+        rerender();
+        player.openInventory(getInventory());
     }
 
     int calculatePageSize() {
         int counter = 0;
-
         for (int slot = 0; slot < getRows() * 9; slot++) {
-            if (getInventory().getItem(slot) == null) counter++;
+            if (getInventory().getItem(slot) == null && getItem(slot) == null) counter++;
         }
-
         return counter;
     }
 }

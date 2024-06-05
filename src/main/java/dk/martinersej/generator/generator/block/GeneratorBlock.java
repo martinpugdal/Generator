@@ -28,10 +28,6 @@ public class GeneratorBlock extends GeneratorElement {
         return generatorType;
     }
 
-    public void setGeneratorType(GeneratorType generatorType) {
-        this.generatorType = generatorType;
-    }
-
     public void drop() {
         GeneratorChest generatorChest = Generator.getInstance().getUserManager().getUser(getOwner()).getGeneratorChest();
         if (generatorChest != null) {
@@ -51,7 +47,11 @@ public class GeneratorBlock extends GeneratorElement {
     }
 
     public boolean isUpgradeable() {
-        return GeneratorType.getGeneratorType(generatorType.getTier() + 1) != null;
+        if (generatorType.isUpgradeAble()) {
+            GeneratorType generatorType1 = GeneratorType.getGeneratorType(generatorType.getTier() + 1);
+            return generatorType1 != null && generatorType1.isUpgradeAble();
+        }
+        return false;
     }
 
     public GeneratorItem createItem() {

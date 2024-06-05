@@ -56,15 +56,15 @@ public class User {
         return multiplier;
     }
 
-    public void setMultiplier(long multiplier) {
+    public void setMultiplier(double multiplier) {
         this.multiplier = multiplier;
     }
 
-    public void addMultiplier(long multiplier) {
+    public void addMultiplier(double multiplier) {
         this.multiplier += multiplier;
     }
 
-    public void removeMultiplier(long multiplier) {
+    public void removeMultiplier(float multiplier) {
         this.multiplier -= multiplier;
     }
 

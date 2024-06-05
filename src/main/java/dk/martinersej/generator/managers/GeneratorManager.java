@@ -33,7 +33,7 @@ public class GeneratorManager {
                 element.drop();
             }
             for (GeneratorChest chest : activeChest) {
-                chest.getGui().updateGui();
+                chest.getGui().rerender();
             }
             updateDropsCounter[0]++;
             if (updateDropsCounter[0] > 25) {

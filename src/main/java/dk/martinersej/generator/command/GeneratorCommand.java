@@ -4,6 +4,7 @@ import dk.martinersej.generator.command.subgenerator.GeneratorGiveCommand;
 import dk.martinersej.generator.utils.command.Command;
 import dk.martinersej.generator.utils.command.CommandResult;
 import dk.martinersej.generator.utils.command.SubCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -13,8 +14,10 @@ import java.util.List;
 
 public class GeneratorCommand extends Command implements CommandExecutor, TabCompleter {
 
-    public GeneratorCommand(JavaPlugin plugin) {
-        super(plugin);
+    public GeneratorCommand(String name, JavaPlugin plugin) {
+        super(name);
+        Bukkit.getPluginCommand(name).setExecutor(this);
+
         addSubCommand(new GeneratorGiveCommand(plugin));
     }
 
@@ -32,7 +35,7 @@ public class GeneratorCommand extends Command implements CommandExecutor, TabCom
                 commandSender.sendMessage("Det er ikke en gyldig subkommando");
                 commandSender.sendMessage("Gyldige subkommandoer:");
                 for (SubCommand cmd : super.getSubCommands()) {
-                    commandSender.sendMessage("- " + cmd.getUsage(cmd.getAliases()[0]) + " - " + cmd.getDescription());
+                    commandSender.sendMessage("- " + cmd.getUsage(getName()) + " - " + cmd.getDescription());
                 }
                 return true;
         }

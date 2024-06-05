@@ -17,7 +17,7 @@ public class TeamCreateCommand extends SubCommand {
             super(
                 plugin,
                 "Opretter et nyt team",
-                "opret <teamnavn>",
+                "<teamnavn>",
                 "",
                 "opret"
             );
@@ -36,20 +36,20 @@ public class TeamCreateCommand extends SubCommand {
         boolean nameAllowed = teamManager.isNameAllowed(teamName);
 
         if (nameTaked) {
-            sender.sendMessage("Teamnavnet er allerede taget");
+            sender.sendMessage("§cTeamnavnet er allerede taget");
             return Result.getCommandResult(this, Result.SUCCESS);
         }
         if (!nameValid) {
-            sender.sendMessage("Teamnavnet er ikke gyldigt");
+            sender.sendMessage("§cTeamnavnet er ikke gyldigt");
             return Result.getCommandResult(this, Result.SUCCESS);
         }
         if (!nameAllowed) {
-            sender.sendMessage("Teamnavnet er ikke tilladt");
+            sender.sendMessage("§cTeamnavnet er ikke tilladt");
             return Result.getCommandResult(this, Result.SUCCESS);
         }
         Player player = (Player) sender;
         teamManager.createTeam(teamName, player);
-        sender.sendMessage("Teamet er oprettet");
+        sender.sendMessage("§aTeamet er oprettet");
         return Result.getCommandResult(this, Result.SUCCESS);
     }
 }

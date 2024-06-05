@@ -20,7 +20,6 @@ public class OnGeneratorUpgrade implements Listener {
         }
 
         Player player = event.getPlayer();
-
         if (player.isSneaking()) {
             return;
         }
@@ -33,7 +32,6 @@ public class OnGeneratorUpgrade implements Listener {
         }
 
         GeneratorBlock element = Generator.getInstance().getGeneratorManager().getGenerator(event.getClickedBlock().getLocation());
-
         if (element == null) {
             return;
         }
@@ -46,7 +44,8 @@ public class OnGeneratorUpgrade implements Listener {
         if (element.isUpgradeable()) {
             long price = GeneratorType.UpgradePrice.valueOf(element.getGeneratorType().name()).getPrice();
             if (VaultHook.getEconomy().getBalance(player) >= price) {
-                VaultHook.getEconomy().withdrawPlayer(player, price);
+                VaultHook.removeBalance(player, price);
+//                VaultHook.getEconomy().withdrawPlayer(player, price);
                 element.upgrade();
                 player.sendMessage("§aDu har opgraderet din generator til " + element.getGeneratorType().getDisplayName() + "!");
             } else {

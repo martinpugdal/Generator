@@ -27,26 +27,6 @@ public class DatabaseManager {
         this.connectionString = String.format("jdbc:sqlite:%s%s%s.db", plugin.getDataFolder(), File.separator, plugin.getDescription().getName());
         try {
             Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createTables(JavaPlugin plugin, Runnable callback) {
-        String sql = new BufferedReader(new InputStreamReader(plugin.getResource("init.sql"), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-
-        this.connect((connection) -> {
-            try {
-                this.connection.createStatement().executeUpdate(sql);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            callback.run();
-        });
-    }
-
-    public void connect(Consumer<Connection> callback) {
-        asyncFuture(() -> {
             if (connection == null) {
                 try {
                     connection = DriverManager.getConnection(connectionString);
@@ -54,6 +34,25 @@ public class DatabaseManager {
                     ex.printStackTrace();
                 }
             }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createTables() {
+        String sql = new BufferedReader(new InputStreamReader(JavaPlugin.getProvidingPlugin(getClass()).getResource("init.sql"), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+        sync((connection) -> {
+            try {
+                connection.createStatement().execute(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void connect(Consumer<Connection> callback) {
+        asyncFuture(() -> {
             callback.accept(connection);
         });
     }

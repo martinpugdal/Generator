@@ -1,13 +1,15 @@
 package dk.martinersej.generator.utils;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.bukkit.inventory.ItemStack;
 
 public class StringUtils {
 
+    public static String formatString(String string) {
+        return WordUtils.capitalizeFully(string.toUpperCase().replace("_", " "));
+    }
+
     public static String formatEnum(Enum<?> obj) {
-        String name = obj.name();
-        return WordUtils.capitalizeFully(name.replace("_", " "));
+        return formatString(obj.name());
     }
 
     public static String formatNumber(double number) {

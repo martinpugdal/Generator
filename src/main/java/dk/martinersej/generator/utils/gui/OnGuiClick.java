@@ -6,14 +6,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class OnGuiClick implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST) // This is to make sure the event is called before other plugins
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getHolder() instanceof BaseGui) {
-            BaseGui baseGui = (BaseGui) event.getInventory().getHolder();
-            if (baseGui.cooldownEnabled()) {
-                baseGui.cooldownCheck(event);
+            BaseGui gui = (BaseGui) event.getInventory().getHolder();
+            if (gui.cooldownEnabled()) {
+                gui.cooldownCheck(event);
             }
-            baseGui.onInventoryClick(event);
+            gui.onInventoryClick(event);
         }
     }
 }

@@ -22,7 +22,7 @@ public class GeneratorGiveCommand extends SubCommand {
         super(
                 plugin,
                 "Giver dig en generator",
-                "give <generator|chest|sellstick|all>",
+                "give <generator|chest|sellstick|slots> [number]",
                 "generator.give",
                 "give"
         );
@@ -55,8 +55,9 @@ public class GeneratorGiveCommand extends SubCommand {
             player.getInventory().addItem(itemStack);
         } else if (args[0].equalsIgnoreCase("slots")) {
             Generator.getInstance().getUserManager().getUser(player.getUniqueId()).addGeneratorSlots(args.length > 1 ? Integer.parseInt(args[1]) : 1);
-        } else {
-            return new CommandResult(this, Result.WRONG_USAGE);
+        } else if (args[0].equals("multi") && args.length > 1) {
+            double amount = Double.parseDouble(args[1]);
+            Generator.getInstance().getUserManager().getUser(player.getUniqueId()).addMultiplier(amount);
         }
 
         return new CommandResult(this, Result.SUCCESS);
